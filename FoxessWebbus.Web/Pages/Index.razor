@@ -4,54 +4,103 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
 
 @if(model == null){
     <h1>loading...</h1>
 }else{
-    <h1>PV Power: @model.PVPower1</h1>
-    <h1>Battery Soc: @model.BatterySoc</h1>
-    <h1>Battery Temp: @model.BatteryTemp</h1>
+    <h1>Solar</h1>
+    <h2>PV Power: @model.PVPowerTotal wh</h2>
+    <h2>PV 1: @model.PVPower1 wh</h2>
+    <h2>PV 2: @model.PVPower2 wh</h2>
+
+    <h1>Battery</h1>
+    <h2>Battery Soc: @model.BatterySoc %</h2>
+    <h2>Battery Temp: @model.BatteryTemp c</h2>
+
+    <h1>Inverter</h1>
+    <h2>Feed In: @model.FeedIn wh</h2>
+    <h2>From Grid: @model.FromGrid wh</h2>
+    <h2>Inverter Temp: @model.FromGrid c</h2>
+
 }
 
 
 
 @code{
-
-    
-public H1Model model;
+    public H1Model model = null;
+    public short total = 0;
 
     protected override async Task OnParametersSetAsync()
     {
 
-             model = new H1Model(){
+            model = new H1Model(){
             PVPower1 = await GetData(31002),
-            PVPower2 = await GetData(31005),
-            BatteryChargeRate = await GetData(31022),
+            PVPower2 = await GetData(31005), 
+            BatteryCharge = await RelativeZero(31022, true),
+            BatteryDischarge = await RelativeZero(31022, false),
             BatterySoc = await GetData(31024),
-            BatteryTemp = await GetData(31023),
-            InverterTemp = await GetData(31018)
+            BatteryTemp = await FormatTemp(31023),
+            InverterTemp = await FormatTemp(31018),
+            FeedIn = await RelativeZero(31014, true),
+            FromGrid = await RelativeZero(31014, false)
+            };
+            model.PVPowerTotal = await PVTotal(model);
+            Console.Write(model);
 
-        };
     }
 
 
-   public async Task<short> GetData(ushort registerNumber){
-    using (ModbusRTUDevice device = new ModbusRTUDevice(1, ConnectionMethod.TCP, "10.10.10.11", 502, 5000, 3))
-        {
-            await device.InitializeAsync(CancellationToken.None);
-            ReadRegistersResult data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
-            foreach (var value in data.Values)
-            {
-                return value;
-               // Console.Write(value);
-            }
-            return 0;
+    //Simply divides by 10 to get the temp in correct format
+    private async Task<short> FormatTemp(ushort registerNumber)
+    {
+        var result = await GetData(registerNumber);
+        if(result.ToString().Length > 2){
+            result /= 10;
+            return result;
         }
-   }
 
+        return result;
+        
+    }
+
+    private async Task<short> PVTotal(H1Model fromModel)
+    {
+        await Task.Delay(1);
+        total = 0;
+        total += fromModel.PVPower1;
+        total += fromModel.PVPower2;    
+        return total;
+    }
+
+    private async Task<short> GetData(ushort registerNumber){
+        using (ModbusRTUDevice device = new ModbusRTUDevice(1, ConnectionMethod.TCP, "10.10.10.11", 502, 5000, 3))
+        {
+                await device.InitializeAsync(CancellationToken.None);
+                ReadRegistersResult data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
+                foreach (var value in data.Values)
+                {
+                    return value;
+                // Console.Write(value);
+                }
+                return 0;
+        }
+    }
+    // This is a hacky method which returns the value only if it is either above or below zero.
+    // Because some values share a register and can be minus
+    private async Task<short> RelativeZero(ushort registerNumber, bool aboveZero)
+    {
+
+       var result = await GetData(registerNumber);
+            if(result > 0 && aboveZero == false){
+                    return result;
+            }else if (result < 0 && aboveZero == true){
+                result *= -1;
+                return result;
+            }
+
+            return 0;     
+
+    }
 }
+    
+    
