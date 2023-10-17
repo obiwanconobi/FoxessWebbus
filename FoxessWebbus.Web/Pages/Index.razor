@@ -20,7 +20,7 @@
     <h1>Inverter</h1>
     <h2>Feed In: @model.FeedIn wh</h2>
     <h2>From Grid: @model.FromGrid wh</h2>
-    <h2>Inverter Temp: @model.FromGrid c</h2>
+    <h2>Inverter Temp: @model.InverterTemp c</h2>
 
 }
 
@@ -45,7 +45,7 @@
             FromGrid = await RelativeZero(31014, false)
             };
             model.PVPowerTotal = await PVTotal(model);
-            Console.Write(model);
+            Console.Write(model.ToString());
 
     }
 
