@@ -1,5 +1,6 @@
 ﻿@using RICADO.Modbus;
 @using Data;
+@inject IJSRuntime JS;
 @page "/"
 
 <PageTitle>Index</PageTitle>
@@ -16,6 +17,8 @@
     <h1>Battery</h1>
     <h2>Battery Soc: @model.BatterySoc %</h2>
     <h2>Battery Temp: @model.BatteryTemp c</h2>
+    <h2>Battery Charge: @model.BatteryCharge w</h2>
+    <h2>Battery Discharge: @model.BatteryDischarge w</h2>
 
     <h1>Inverter</h1>
     <h2>Feed In: @model.FeedIn wh</h2>
@@ -45,13 +48,19 @@
             FromGrid = await RelativeZero(31014, false)
             };
             model.PVPowerTotal = await PVTotal(model);
-            Console.Write(model.ToString());
-
+            
+            Console.WriteLine("Inverter Temp:" + model.InverterTemp.ToString());
+            Console.WriteLine("Battery charge:" + model.BatteryCharge.ToString());
+            Console.WriteLine("Battery Discharge:" +model.BatteryDischarge.ToString());
+            Console.WriteLine("Battery Soc:" +model.BatterySoc.ToString());
+            Console.WriteLine("Battery Temp:" + model.BatteryTemp.ToString());
+            Console.WriteLine("From Grid:" + model.FromGrid.ToString());
+            Console.WriteLine("Feed in:" + model.FeedIn.ToString());
     }
 
 
-    //Simply divides by 10 to get the temp in correct format
-    private async Task<short> FormatTemp(ushort registerNumber)
+        //Simply divides by 10 to get the temp in correct format
+        private async Task<short> FormatTemp(ushort registerNumber)
     {
         var result = await GetData(registerNumber);
         if(result.ToString().Length > 2){
