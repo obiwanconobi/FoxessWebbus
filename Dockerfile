@@ -5,7 +5,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["FoxessWebbus.Web/FoxessWebbus.Web.csproj", "FoxessWebbus.Web/"]
-RUN dotnet restore "ITWebApp/ITWebApp.csproj"
+RUN dotnet restore "FoxessWebbus.Web/FoxessWebbus.Web.csproj"
 COPY . .
 WORKDIR "/src/FoxessWebbus.Web"
 RUN dotnet build "FoxessWebbus.Web.csproj" -c Release -o /app/build
