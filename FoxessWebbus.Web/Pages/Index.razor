@@ -1,0 +1,57 @@
+﻿@using RICADO.Modbus;
+@using Data;
+@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@if(model == null){
+    <h1>loading...</h1>
+}else{
+    <h1>PV Power: @model.PVPower1</h1>
+    <h1>Battery Soc: @model.BatterySoc</h1>
+    <h1>Battery Temp: @model.BatteryTemp</h1>
+}
+
+
+
+@code{
+
+    
+public H1Model model;
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+             model = new H1Model(){
+            PVPower1 = await GetData(31002),
+            PVPower2 = await GetData(31005),
+            BatteryChargeRate = await GetData(31022),
+            BatterySoc = await GetData(31024),
+            BatteryTemp = await GetData(31023),
+            InverterTemp = await GetData(31018)
+
+        };
+    }
+
+
+   public async Task<short> GetData(ushort registerNumber){
+    using (ModbusRTUDevice device = new ModbusRTUDevice(1, ConnectionMethod.TCP, "10.10.10.11", 502, 5000, 3))
+        {
+            await device.InitializeAsync(CancellationToken.None);
+            ReadRegistersResult data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
+            foreach (var value in data.Values)
+            {
+                return value;
+               // Console.Write(value);
+            }
+            return 0;
+        }
+   }
+
+}
