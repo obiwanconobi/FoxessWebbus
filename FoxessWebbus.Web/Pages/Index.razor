@@ -33,6 +33,13 @@
     public H1Model model = null;
     public short total = 0;
 
+    UploadModelData upload = new UploadModelData();
+
+
+    protected async void Upload(H1Model model){
+        upload.UploadData(model);
+    }    
+
     protected override async Task OnParametersSetAsync()
     {
 
@@ -48,7 +55,7 @@
             FromGrid = await RelativeZero(31014, false)
             };
             model.PVPowerTotal = await PVTotal(model);
-            
+            Upload(model);
             Console.WriteLine("Inverter Temp:" + model.InverterTemp.ToString());
             Console.WriteLine("Battery charge:" + model.BatteryCharge.ToString());
             Console.WriteLine("Battery Discharge:" +model.BatteryDischarge.ToString());

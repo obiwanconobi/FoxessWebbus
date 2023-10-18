@@ -2,16 +2,17 @@ using FoxessWebbus.Web.Data;
 using Microsoft.EntityFrameworkCore;
 public class SqliteContext : DbContext
 {
-    protected readonly IConfiguration Configuration;
+   // protected readonly IConfiguration Configuration;
 
-    public SqliteContext(IConfiguration configuration)
-    {
-    Configuration = configuration;
-    }
+    //public SqliteContext(IConfiguration configuration)
+    //{
+    //Configuration = configuration;
+    //}
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite(Configuration.GetConnectionString("sqliteDB"));
+        var test = Environment.GetEnvironmentVariable("SqliteDB");
+        optionsBuilder.UseSqlite(Environment.GetEnvironmentVariable("SqliteDB"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
