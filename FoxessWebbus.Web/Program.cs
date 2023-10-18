@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using FoxessWebbus.Web.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,6 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-
-
+var connectionString = builder.Configuration.GetConnectionString("SqliteDB");
+builder.Services.AddDbContextFactory<SqliteContext>(options => options.UseSqlite(connectionString));
 app.Run();
