@@ -1,9 +1,69 @@
 ﻿@using RICADO.Modbus;
 @using Data;
+@using Shared;
 @inject IJSRuntime JS;
 @page "/"
 
 <PageTitle>Index</PageTitle>
+
+<EditForm Model="@PollTime" OnSubmit="@Submit">
+    <InputText @bind-Value="PollTime" />
+    <button type="submit">Submit</button>
+</EditForm>
+
+<MudContainer MaxWidth="MaxWidth.ExtraSmall">
+    <MudGrid Spacing="1" Justify="Justify.FlexStart">
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px" />
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px">
+                <MudAvatar Color="Color.Success" Variant="Variant.Filled" Style="object-position: center;">
+                    <MudIcon Color="Color.Default" Style="object-position: center;" Icon="@Icons.Material.Rounded.SolarPower" Size="Size.Large" />
+                </MudAvatar>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px" />
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px">
+                <MudAvatar Color="Color.Success" Variant="Variant.Filled">
+                    <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.ElectricalServices" Size="Size.Large" />
+                </MudAvatar>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px">
+                
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px">
+                <MudAvatar Color="Color.Info" Variant="Variant.Filled">
+                    <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.House" Size="Size.Large" />
+                </MudAvatar>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px" />
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px">
+                <MudAvatar Color="Color.Success" Variant="Variant.Filled">
+                    <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.BatteryStd" Size="Size.Large" />
+                </MudAvatar>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px" />
+        </MudItem>
+    </MudGrid>
+
+</MudContainer>
+
+
+
 
 
 @if(model == null){
@@ -34,6 +94,15 @@
     public short total = 0;
 
     UploadModelData upload = new UploadModelData();
+
+    public string? PollTime { get; set; } = "";
+
+    private void Submit()
+    {
+        SettingsHelper.AddOrUpdateAppSetting<int>("PollTime", Convert.ToInt32(PollTime));
+        var result = SettingsHelper.ReadAppSetting<int>("PollTime");
+        // Logger.LogInformation("Model.Id = {Id}", Model?.Id);
+    }
 
 
     protected async void Upload(H1Model model){
