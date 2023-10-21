@@ -6,60 +6,81 @@
 
 <PageTitle>Index</PageTitle>
 
-<EditForm Model="@PollTime" OnSubmit="@Submit">
+<!--<EditForm Model="@PollTime" OnSubmit="@Submit">
     <InputText @bind-Value="PollTime" />
     <button type="submit">Submit</button>
-</EditForm>
+</EditForm> -->
 
-<MudContainer MaxWidth="MaxWidth.ExtraSmall">
-    <MudGrid Spacing="1" Justify="Justify.FlexStart">
+
+<MudContainer justify-start MaxWidth="MaxWidth.ExtraSmall">
+ 
+    <MudGrid Spacing="1">
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px" />
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none" />
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px">
-                <MudAvatar Color="Color.Success" Variant="Variant.Filled" Style="object-position: center;">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
+                <MudAvatar Color="Color.Success" Size="Size.Large"  Variant="Variant.Filled" Style="">
                     <MudIcon Color="Color.Default" Style="object-position: center;" Icon="@Icons.Material.Rounded.SolarPower" Size="Size.Large" />
                 </MudAvatar>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px" />
-        </MudItem>
-        <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px">
-                <MudAvatar Color="Color.Success" Variant="Variant.Filled">
-                    <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.ElectricalServices" Size="Size.Large" />
-                </MudAvatar>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px">
+                 <br/>
+                <MudText Align="Align.Center" Style="padding-left:12px" Typo="Typo.overline">Solar</MudText>
+                <br/>
+                <MudText Align="Align.Center" Style="padding-left:12px" Typo="Typo.overline">@TotalSolar</MudText>
                 
             </MudPaper>
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px">
-                <MudAvatar Color="Color.Info" Variant="Variant.Filled">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none"/>
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
+                <MudAvatar Color="gridColorIndicator" Size="Size.Large" Variant="Variant.Filled">
+                    <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.ElectricalServices" Size="Size.Large" />
+                </MudAvatar>
+                 <br/>
+                <MudText Align="Align.Center" Style="padding-left:12px" Typo="Typo.overline">Grid</MudText>
+                <br/>
+                <MudText Align="Align.Center" Style="padding-left:12px" Typo="Typo.overline">@TotalGridUse</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
+                
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="4">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
+                <MudAvatar Color="Color.Info" Size="Size.Large" Variant="Variant.Filled">
                     <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.House" Size="Size.Large" />
                 </MudAvatar>
+                 <br/>
+                <MudText Align="Align.Center" Style="padding-left:12px" Typo="Typo.overline">House</MudText>
+                <br/>
+                <MudText Align="Align.Center" Style="padding-left:12px" Typo="Typo.overline">@TotalHouse</MudText>
             </MudPaper>
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px" />
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none" />
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px">
-                <MudAvatar Color="Color.Success" Variant="Variant.Filled">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
+                <MudAvatar Style="display:grid;" Color="@batteryColorIndicator" Size="Size.Large" Variant="Variant.Filled">
                     <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.BatteryStd" Size="Size.Large" />
+                    <br/>
+                    <MudText Align="Align.Center" Typo="Typo.caption">@CurrentBatterySoc</MudText>
                 </MudAvatar>
+                 <br/>
+                <MudText Align="Align.Center" Style="padding-left:12px" Typo="Typo.overline">Battery</MudText>
+                <br/>
+                <MudText Align="Align.Center" Style="padding-left:12px" Typo="Typo.overline">@TotalBattery</MudText>
             </MudPaper>
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px" />
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none" />
         </MudItem>
     </MudGrid>
-
+   
 </MudContainer>
 
 
@@ -97,6 +118,16 @@
 
     public string? PollTime { get; set; } = "";
 
+    public string? TotalSolar {get;set;} = "";
+
+    public string? TotalHouse {get;set;} = "";
+    public string? TotalGridUse {get;set;} = "";
+    public string? TotalBattery {get;set;} = "";
+    public string? CurrentBatterySoc {get;set;} = "";
+    public MudBlazor.Color batteryColorIndicator {get;set;} = Color.Success;
+    public MudBlazor.Color gridColorIndicator {get;set;} = Color.Success;
+
+
     private void Submit()
     {
         SettingsHelper.AddOrUpdateAppSetting<int>("PollTime", Convert.ToInt32(PollTime));
@@ -124,14 +155,72 @@
             FromGrid = await RelativeZero(31014, false)
             };
             model.PVPowerTotal = await PVTotal(model);
+
+          
+            CurrentBatterySoc = model.BatterySoc.ToString() + "%";
+            TotalSolar = model.PVPowerTotal.ToString() + "w";
+            TotalGridUse = GridUse() + "w";
+            TotalBattery = BatteryUse() + "w";
+            TotalHouse = TotalHouseUse() + "w";
+            
+
+
             Upload(model);
             Console.WriteLine("Inverter Temp:" + model.InverterTemp.ToString());
             Console.WriteLine("Battery charge:" + model.BatteryCharge.ToString());
-            Console.WriteLine("Battery Discharge:" +model.BatteryDischarge.ToString());
+            Console.WriteLine("Battery Discharge:" + model.BatteryDischarge.ToString());
             Console.WriteLine("Battery Soc:" +model.BatterySoc.ToString());
             Console.WriteLine("Battery Temp:" + model.BatteryTemp.ToString());
             Console.WriteLine("From Grid:" + model.FromGrid.ToString());
             Console.WriteLine("Feed in:" + model.FeedIn.ToString());
+    }
+
+    private string GridUse(){
+
+        if(model.FeedIn > 5){
+            gridColorIndicator = Color.Success;
+            return model.FeedIn.ToString();
+        }
+
+        if (model.FromGrid > 5){
+            if(model.FromGrid > 20){
+                gridColorIndicator = Color.Warning;
+            }
+            
+            return model.FeedIn.ToString();
+        }
+
+        return "0";
+       
+    }
+
+    private string BatteryUse(){
+
+        if(model.BatteryDischarge > 0){
+            batteryColorIndicator = Color.Warning;
+            return model.BatteryDischarge.ToString();
+        }else{
+            batteryColorIndicator = Color.Success;
+            return model.BatteryCharge.ToString();
+        }
+      
+
+    }
+
+    private string TotalHouseUse()
+    {
+        short total = 0;
+        total += model.BatteryDischarge;
+        total += model.FromGrid;
+        
+        short solarToHouse = 0;
+        solarToHouse += model.PVPowerTotal;
+        solarToHouse -= model.FeedIn;
+        solarToHouse -= model.BatteryCharge;
+
+        total += solarToHouse;
+
+        return total.ToString();
     }
 
 
