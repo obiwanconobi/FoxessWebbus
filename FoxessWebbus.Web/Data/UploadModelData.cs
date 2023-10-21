@@ -11,27 +11,27 @@ public class UploadModelData{
     }
 
     public async void UploadData(H1Model model){
-          _context ??= new SqliteContext();
+         // _context ??= new SqliteContext();
 
-        using (var context  = new SqliteContext()){
-            H1ModelDb dbModel = new H1ModelDb(){
-                EntryId = Guid.NewGuid(),
-                PVPower1 = model.PVPower1,
-                PVPower2 = model.PVPower2,
-                PVPowerTotal = model.PVPowerTotal,
-                BatteryCharge = model.BatteryCharge,
-                BatteryDischarge = model.BatteryDischarge,
-                BatterySoc = model.BatterySoc,
-                BatteryTemp = model.BatteryTemp,
-                InverterTemp = model.InverterTemp,
-                FeedIn = model.FeedIn,
-                FromGrid = model.FromGrid
+       // using (var context  = new SqliteContext()){
+       //     H1ModelDb dbModel = new H1ModelDb(){
+       //         EntryId = Guid.NewGuid(),
+      //          PVPower1 = model.PVPower1,
+        //        PVPower2 = model.PVPower2,
+        //        PVPowerTotal = model.PVPowerTotal,
+        //        BatteryCharge = model.BatteryCharge,
+        //        BatteryDischarge = model.BatteryDischarge,
+        //        BatterySoc = model.BatterySoc,
+        //        BatteryTemp = model.BatteryTemp,
+        //        InverterTemp = model.InverterTemp,
+        //        FeedIn = model.FeedIn,
+        //        FromGrid = model.FromGrid
 
 
-            };
+          //  };
            
            // context.FoxH1.Add(dbModel);
            // await context.SaveChangesAsync();
-        }
+        
     }
 }
