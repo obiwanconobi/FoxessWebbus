@@ -33,6 +33,10 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
+var db = new SqliteContext();
+db.Database.Migrate();
+
+
 //var connectionString = builder.Configuration.GetConnectionString("SqliteDB");
 //builder.Services.AddDbContextFactory<SqliteContext>(options => options.UseSqlite(connectionString));
 app.Run();

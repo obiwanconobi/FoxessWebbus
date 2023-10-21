@@ -17,6 +17,7 @@ public class SqliteContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
         modelBuilder.Entity<H1ModelDb>().HasKey(x => x.EntryId);
     }
 
