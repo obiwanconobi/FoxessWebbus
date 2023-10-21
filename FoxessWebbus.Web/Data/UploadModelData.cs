@@ -30,8 +30,8 @@ public class UploadModelData{
 
             };
            
-            context.FoxH1.Add(dbModel);
-            await context.SaveChangesAsync();
+           // context.FoxH1.Add(dbModel);
+           // await context.SaveChangesAsync();
         }
     }
 }
