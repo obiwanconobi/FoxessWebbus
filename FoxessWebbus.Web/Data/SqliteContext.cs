@@ -22,7 +22,7 @@ public class SqliteContext : DbContext
     }
 
     //public DbSet<Employee> Employees{ get; set; }
-    public DbSet<H1ModelDb> FoxH1 {get;set;}
+   // public DbSet<H1ModelDb> FoxH1 {get;set;}
 
 }
 
