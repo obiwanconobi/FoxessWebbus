@@ -1,6 +1,7 @@
 ﻿@using RICADO.Modbus;
 @using Data;
 @using Shared;
+@using System.Diagnostics;
 @inject IJSRuntime JS;
 @page "/"
 
@@ -142,6 +143,9 @@
 
     protected override async Task OnParametersSetAsync()
     {
+            Stopwatch watch = new Stopwatch();
+
+            watch.Start();
 
             model = new H1Model(){
             PVPower1 = await GetData(31002),
@@ -163,10 +167,12 @@
             TotalBattery = BatteryUse() + "w";
             TotalHouse = TotalHouseUse() + "w";
             
-
+            watch.Stop();
 
           //  Upload(model);
             Console.WriteLine("VERSION: 0.0.1");
+
+            Console.WriteLine("Time Taken: " + watch.Elapsed);
             Console.WriteLine("Inverter Temp:" + model.InverterTemp.ToString());
             Console.WriteLine("Battery charge:" + model.BatteryCharge.ToString());
             Console.WriteLine("Battery Discharge:" + model.BatteryDischarge.ToString());
