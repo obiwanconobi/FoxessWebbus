@@ -1,4 +1,5 @@
 using FoxessWebbus.Web.Data;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
 public class UploadModelData{
@@ -30,8 +31,13 @@ public class UploadModelData{
 
             };
            
+            try{
             context.FoxH1.Add(dbModel);
             await context.SaveChangesAsync();
+            }catch(Exception ex){
+                Console.WriteLine(ex.ToString());
+            }
+            
        }
     }
 }
