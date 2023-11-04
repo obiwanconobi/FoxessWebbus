@@ -9,6 +9,7 @@ public class SqliteContextFactory : IDesignTimeDbContextFactory<SqliteContext>
         DbContextOptionsBuilder<SqliteContext> optionsBuilder = new DbContextOptionsBuilder<SqliteContext>();
             
             string connString = Environment.GetEnvironmentVariable("SqliteDB");
+            Console.WriteLine("DB location: " + connString.ToString());
             optionsBuilder.UseSqlite(connString);
             
             return new SqliteContext();

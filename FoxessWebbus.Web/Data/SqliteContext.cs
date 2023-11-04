@@ -12,6 +12,7 @@ public class SqliteContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var test = Environment.GetEnvironmentVariable("SqliteDB");
+        Console.WriteLine("DB location: " + test.ToString());
         optionsBuilder.UseSqlite(Environment.GetEnvironmentVariable("SqliteDB"));
     }
 
