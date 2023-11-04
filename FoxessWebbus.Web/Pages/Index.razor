@@ -137,7 +137,7 @@
 
 
     protected async void Upload(H1Model model){
-       // upload.UploadData(model);
+        upload.UploadData(model);
     }    
 
     protected override async Task OnParametersSetAsync()
@@ -165,7 +165,7 @@
             
 
 
-           // Upload(model);
+            Upload(model);
             Console.WriteLine("VERSION: 0.0.1");
             Console.WriteLine("Inverter Temp:" + model.InverterTemp.ToString());
             Console.WriteLine("Battery charge:" + model.BatteryCharge.ToString());
@@ -248,7 +248,7 @@
     }
 
     private async Task<short> GetData(ushort registerNumber){
-        using (ModbusRTUDevice device = new ModbusRTUDevice(1, ConnectionMethod.TCP, "10.10.10.11", 502, 5000, 3))
+        using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 5000, 3))
         {
                 await device.InitializeAsync(CancellationToken.None);
                 ReadRegistersResult data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
