@@ -27,8 +27,8 @@ public class UploadModelData{
                BatteryTemp = model.BatteryTemp,
                InverterTemp = model.InverterTemp,
                FeedIn = model.FeedIn,
-               FromGrid = model.FromGrid
-
+               FromGrid = model.FromGrid,
+               LoggedDateTime = DateTime.Now
 
             };
             
