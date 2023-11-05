@@ -159,7 +159,7 @@
             FromGrid = await RelativeZero(31014, false)
             };
             model.PVPowerTotal = await PVTotal(model);
-
+            model.LoggedDateTime = DateTime.Now;
           
             CurrentBatterySoc = model.BatterySoc.ToString() + "%";
             TotalSolar = model.PVPowerTotal.ToString() + "w";
