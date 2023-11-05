@@ -256,8 +256,12 @@
     private async Task<short> GetData(ushort registerNumber){
         using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 5000, 3))
         {
+                Stopwatch timer = new Stopwatch();
                 await device.InitializeAsync(CancellationToken.None);
+                timer.Start();
                 ReadRegistersResult data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
+                timer.Stop();
+                Console.WriteLine("Time taken for " + registerNumber + ": "  + timer.Elapsed);
                 foreach (var value in data.Values)
                 {
                     return value;
