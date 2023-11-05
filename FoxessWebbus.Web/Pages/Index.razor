@@ -254,7 +254,7 @@
     }
 
     private async Task<short> GetData(ushort registerNumber){
-        using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 500, 5))
+        using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 1000, 5))
         {
                 Stopwatch timer = new Stopwatch();
                 await device.InitializeAsync(CancellationToken.None);
