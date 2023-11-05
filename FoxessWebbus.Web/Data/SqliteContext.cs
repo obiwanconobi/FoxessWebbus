@@ -1,5 +1,7 @@
 using FoxessWebbus.Web.Data;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+
 public class SqliteContext : DbContext
 {
    // protected readonly IConfiguration Configuration;
@@ -13,7 +15,15 @@ public class SqliteContext : DbContext
     {
         var test = Environment.GetEnvironmentVariable("SqliteDB");
         Console.WriteLine("DB location: " + test.ToString());
-        optionsBuilder.UseSqlite(Environment.GetEnvironmentVariable("SqliteDB"));
+    //    var path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+      //  string curdir = Directory.GetCurrentDirectory();
+     //   string relativePath = @"Data\FoxessWebbus.db";
+       
+       // string connectionString = string.Format("Data Source={0};Version=3;Pooling=True;Max Pool Size=100;", path.Replace("file:\\", "") + "\\" + relativePath);
+       
+
+
+        optionsBuilder.UseSqlite(test);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
