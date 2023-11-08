@@ -19,8 +19,13 @@ namespace FoxessWebbus.Web.Services
 
             while(count < 6) 
             {
+                Stopwatch timer = new Stopwatch();
+                timer.Start();
                 await Upload();
+                timer.Stop();
+                Console.WriteLine("Time Taken for Get Data to DB: " + timer.Elapsed);
                 count++;
+                Thread.Sleep(10000);
             }
             Console.WriteLine("Run through complete");
         }
