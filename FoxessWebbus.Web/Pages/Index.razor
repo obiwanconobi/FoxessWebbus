@@ -2,6 +2,7 @@
 @using Data;
 @using Shared;
 @using System.Diagnostics;
+@using FoxessWebbus.Web.Services;
 @inject IJSRuntime JS;
 @page "/"
 
@@ -138,28 +139,32 @@
 
 
     protected async void Upload(H1Model model){
-        upload.UploadData(model);
+       // upload.UploadData(model);
     }    
 
     protected override async Task OnParametersSetAsync()
     {
+
+            GetLatestDataService dataService = new GetLatestDataService();
+            var resultgg = dataService.GetData();
+
             Stopwatch watch = new Stopwatch();
 
             watch.Start();
-
-            model = new H1Model(){
-            PVPower1 = await GetData(31002),
-            PVPower2 = await GetData(31005), 
-            BatteryCharge = await RelativeZero(31022, true),
-            BatteryDischarge = await RelativeZero(31022, false),
-            BatterySoc = await GetData(31024),
-            BatteryTemp = await FormatTemp(31023),
-            InverterTemp = await FormatTemp(31018),
-            FeedIn = await RelativeZero(31014, true),
-            FromGrid = await RelativeZero(31014, false)
-            };
-            model.PVPowerTotal = await PVTotal(model);
-            model.LoggedDateTime = DateTime.Now;
+            model = resultgg;
+            //model = new H1Model(){
+            //PVPower1 = await GetData(31002),
+            //PVPower2 = await GetData(31005), 
+            //BatteryCharge = await RelativeZero(31022, true),
+            //BatteryDischarge = await RelativeZero(31022, false),
+            //BatterySoc = await GetData(31024),
+            //BatteryTemp = await FormatTemp(31023),
+            //InverterTemp = await FormatTemp(31018),
+            //FeedIn = await RelativeZero(31014, true),
+            //FromGrid = await RelativeZero(31014, false)
+            //};
+            //model.PVPowerTotal = await PVTotal(model);
+            //model.LoggedDateTime = DateTime.Now;
           
             CurrentBatterySoc = model.BatterySoc.ToString() + "%";
             TotalSolar = model.PVPowerTotal.ToString() + "w";

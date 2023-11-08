@@ -4,6 +4,9 @@ using FoxessWebbus.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MudBlazor.Services;
+using FoxessWebbus.Web.Services;
+using Quartz;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,8 +14,23 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
-
 builder.Services.AddMudServices();
+
+
+builder.Services.AddQuartz(q =>
+{
+    // Just use the name of your job that you created in the Jobs folder.
+    var jobKey = new JobKey("UploadModelBGService");
+    q.AddJob<UploadModelBGService>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("SendEmailJob-trigger")
+        //This Cron interval can be described as "run every minute" (when second is zero)
+        .WithCronSchedule("0 * * ? * *")
+    );
+});
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 var app = builder.Build();
 
