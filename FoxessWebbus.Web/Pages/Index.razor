@@ -92,6 +92,7 @@
 @if(model == null){
     <h1>loading...</h1>
 }else{
+    <h3>@model.LoggedDateTime</h3>
     <h1>Solar</h1>
     <h2>PV Power: @model.PVPowerTotal wh</h2>
     <h2>PV 1: @model.PVPower1 wh</h2>
