@@ -1,0 +1,33 @@
+﻿@using FoxessWebbus.Web.Services;
+@using FoxessWebbus.Web.Data;
+@page "/errors"
+
+
+<h3>ErrorLog</h3>
+
+
+<MudTable Items="@errors" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Method</MudTh>
+        <MudTh>Message</MudTh>
+        <MudTh>Date Time</MudTh>
+      
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nr">@context.Method</MudTd>
+        <MudTd DataLabel="Sign">@context.Message</MudTd>
+        <MudTd DataLabel="Name">@context.ErrorDateTime</MudTd>
+    </RowTemplate>
+</MudTable>
+
+
+@code {
+    ErrorLogService errorLogService = new ErrorLogService();
+    IEnumerable<ErrorLog> errors = new List<ErrorLog>();
+    protected override async Task OnParametersSetAsync()
+    {
+        errors = await errorLogService.GetErrors();
+
+    }
+
+}
