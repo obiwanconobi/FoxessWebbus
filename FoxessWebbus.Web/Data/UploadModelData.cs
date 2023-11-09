@@ -1,4 +1,5 @@
 using FoxessWebbus.Web.Data;
+using FoxessWebbus.Web.Services;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,6 +7,7 @@ using System;
 public class UploadModelData{
 
     private SqliteContext? _context;
+    private ErrorLogService? _errorLogger;
 
     public UploadModelData(){
        //_context ??= await EmployeeDataContextFactory.CreateDbContextAsync();
@@ -51,9 +53,14 @@ public class UploadModelData{
 
 
             try{
-            context.FoxH1.Add(dbModel);
-            await context.SaveChangesAsync();
-            }catch(Exception ex){
+                context.FoxH1.Add(dbModel);
+                await context.SaveChangesAsync();
+
+            }
+            catch(Exception ex){
+                _errorLogger = new ErrorLogService();
+
+                _errorLogger.LogError(ex.ToString(), "UploadModelData");
                 Console.WriteLine(ex.ToString());
             }
             
