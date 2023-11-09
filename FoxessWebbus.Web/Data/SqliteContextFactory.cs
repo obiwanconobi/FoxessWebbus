@@ -7,15 +7,17 @@ public class SqliteContextFactory : IDesignTimeDbContextFactory<SqliteContext>
     public SqliteContext CreateDbContext(string[] args)
     {
         DbContextOptionsBuilder<SqliteContext> optionsBuilder = new DbContextOptionsBuilder<SqliteContext>();
-            
-         
-             string relativePath = @"Data\FoxessWebbus.db";
+
+        var test = Environment.GetEnvironmentVariable("SqliteDB");
+        Console.WriteLine("DB location: " + test.ToString());
+
+       // string relativePath = @"Data\FoxessWebbus.db";
        
-        string connectionString = string.Format("Data Source={0};", relativePath);
+      //  string connectionString = string.Format("Data Source={0};", relativePath);
        
 
 
-        optionsBuilder.UseSqlite(Environment.GetEnvironmentVariable(connectionString));
+        optionsBuilder.UseSqlite(Environment.GetEnvironmentVariable("SqliteDB"));
             return new SqliteContext();
     }
 }

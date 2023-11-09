@@ -13,17 +13,17 @@ public class SqliteContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      //  var test = Environment.GetEnvironmentVariable("SqliteDB");
-       // Console.WriteLine("DB location: " + test.ToString());
+        var test = Environment.GetEnvironmentVariable("SqliteDB");
+        Console.WriteLine("DB location: " + test.ToString());
     //    var path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
       //  string curdir = Directory.GetCurrentDirectory();
-        string relativePath = @"Data\FoxessWebbus.db";
+      //  string relativePath = @"Data\FoxessWebbus.db";
        
-        string connectionString = string.Format("Data Source={0};", relativePath);
+      //  string connectionString = string.Format("Data Source={0};", relativePath);
        
 
 
-        optionsBuilder.UseSqlite(connectionString);
+        optionsBuilder.UseSqlite(test);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
