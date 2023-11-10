@@ -99,14 +99,16 @@ namespace FoxessWebbus.Web.Services
                         }
                         catch (Exception ex)
                         {
-                            errorLog.LogError(ex.ToString(), "Register number:" + registerNumber.ToString() + " :: Packets sent: " + data.PacketsSent.ToString() + " :: Number of tries: " + i.ToString());
-                            return 0;
+                            errorLog.LogError(ex.ToString(), "Register number:" + registerNumber.ToString() + " :: Packets sent: " + data.PacketsSent.ToString() + " :: Number of tries: " + i.ToString());    
                         }
 
 
                     }
 
- 
+                    if(data.Values == null)
+                    {
+                        return 0;
+                    }
                     
                     timer.Stop();
                     Console.WriteLine("Time taken for " + registerNumber + ": " + timer.Elapsed);
