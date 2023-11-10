@@ -96,8 +96,10 @@ namespace FoxessWebbus.Web.Services
                 }
             }catch(Exception ex) 
             {
+                ErrorLogService errorLog = new ErrorLogService();
                 Console.WriteLine("Error when getting data");
                 Console.WriteLine(ex.ToString());
+                errorLog.LogError(ex.ToString(), "UploadModelBGService");
                 return 0;
             }
 
