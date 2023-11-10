@@ -4,6 +4,7 @@ using System.Diagnostics;
 using static MudBlazor.Colors;
 using Quartz;
 using System.Runtime.Versioning;
+using MudBlazor;
 
 namespace FoxessWebbus.Web.Services
 {
@@ -12,6 +13,7 @@ namespace FoxessWebbus.Web.Services
     {
         public short total = 0;
         UploadModelData upload = new UploadModelData();
+        ErrorLogService errorLog = new ErrorLogService();
 
         public async Task Execute(IJobExecutionContext context)
         {
@@ -79,12 +81,21 @@ namespace FoxessWebbus.Web.Services
 
             try
             {
-                using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 500, 5))
+                using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 600, 5))
                 {
+                    ReadRegistersResult data = new ReadRegistersResult();
                     Stopwatch timer = new Stopwatch();
                     await device.InitializeAsync(CancellationToken.None);
                     timer.Start();
-                    ReadRegistersResult data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
+                    try
+                    {
+                        data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
+                    }catch(Exception ex) 
+                    {
+                        errorLog.LogError(ex.ToString(), "Register number:"+ registerNumber.ToString() + " :: Packets sent: " + data.PacketsSent.ToString() );
+                        return 0;
+                    }
+                    
                     timer.Stop();
                     Console.WriteLine("Time taken for " + registerNumber + ": " + timer.Elapsed);
                     foreach (var value in data.Values)
@@ -96,7 +107,7 @@ namespace FoxessWebbus.Web.Services
                 }
             }catch(Exception ex) 
             {
-                ErrorLogService errorLog = new ErrorLogService();
+                
                 Console.WriteLine("Error when getting data");
                 Console.WriteLine(ex.ToString());
                 errorLog.LogError(ex.ToString(), "UploadModelBGService");
