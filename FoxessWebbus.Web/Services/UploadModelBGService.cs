@@ -83,18 +83,30 @@ namespace FoxessWebbus.Web.Services
             {
                 using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 600, 5))
                 {
+
                     ReadRegistersResult data = new ReadRegistersResult();
                     Stopwatch timer = new Stopwatch();
                     await device.InitializeAsync(CancellationToken.None);
                     timer.Start();
-                    try
+
+                    for (int i = 0; i < 3; i++)
                     {
-                        data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
-                    }catch(Exception ex) 
-                    {
-                        errorLog.LogError(ex.ToString(), "Register number:"+ registerNumber.ToString() + " :: Packets sent: " + data.PacketsSent.ToString() );
-                        return 0;
+
+                        try
+                        {
+                            data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            errorLog.LogError(ex.ToString(), "Register number:" + registerNumber.ToString() + " :: Packets sent: " + data.PacketsSent.ToString() + " :: Number of tries: " + i.ToString());
+                            return 0;
+                        }
+
+
                     }
+
+ 
                     
                     timer.Stop();
                     Console.WriteLine("Time taken for " + registerNumber + ": " + timer.Elapsed);
