@@ -44,7 +44,7 @@ public class H1Model
                 FeedIn = RelativeZero(val, false);
                 break;
             case 8:
-                FromGrid = RelativeZero(val, false);
+                FromGrid = RelativeZero(val, true);
                 break;
 
         }
