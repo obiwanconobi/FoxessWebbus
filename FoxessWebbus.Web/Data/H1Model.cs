@@ -12,8 +12,77 @@ public class H1Model
     public short InverterTemp { get; set; }
     public short FeedIn {get;set;}
     public short FromGrid {get;set;}
-
-
-  
     public DateTime LoggedDateTime { get; set; }
+
+
+    public void SetValue(int count, short val){
+
+        switch (count) 
+        {
+            case 0:
+                PVPower1 = val;
+                break;
+            case 1:
+                PVPower2 = val;
+                break;
+            case 2:
+                BatteryCharge = RelativeZero(val, true);
+                break;
+            case 3:
+                BatteryDischarge = RelativeZero(val, false);
+                break;
+            case 4:
+                BatterySoc = val;
+                break;
+            case 5:
+                BatteryTemp = FormatTemp(val);
+                break;
+            case 6:
+                InverterTemp = FormatTemp(val);
+                break;
+            case 7:
+                FeedIn = RelativeZero(val, false);
+                break;
+            case 8:
+                FromGrid = RelativeZero(val, false);
+                break;
+
+        }
+
+    }
+
+    private short FormatTemp(short val)
+        {
+            
+            if (val.ToString().Length > 2)
+            {
+                val /= 10;
+                return val;
+            }
+
+            return val;
+
+        }
+
+
+    private short RelativeZero(short val, bool aboveZero)
+    {
+
+            //var result = await GetData(registerNumber);
+            if (val > 0 && aboveZero == false)
+            {
+                return val;
+            }
+            else if (val < 0 && aboveZero == true)
+            {
+                val *= -1;
+                return val;
+            }
+
+            return 0;
+
+        }    
+
+
+
 }

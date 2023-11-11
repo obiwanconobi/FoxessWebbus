@@ -5,6 +5,8 @@ using static MudBlazor.Colors;
 using Quartz;
 using System.Runtime.Versioning;
 using MudBlazor;
+using System.Net;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FoxessWebbus.Web.Services
 {
@@ -14,6 +16,10 @@ namespace FoxessWebbus.Web.Services
         public short total = 0;
         UploadModelData upload = new UploadModelData();
         ErrorLogService errorLog = new ErrorLogService();
+
+        List<ushort> RegisterNumbersList = new List<ushort>(){
+            31002,31005,31022,31022,31024,31023,31018,31014,31014
+        };
 
         public async Task Execute(IJobExecutionContext context)
         {
@@ -32,10 +38,11 @@ namespace FoxessWebbus.Web.Services
             Console.WriteLine("Run through complete");
         }
 
+         
 
         public async Task Upload()
         {
-            var model = new H1Model()
+            /* var model = new H1Model()
             {
                 PVPower1 = await GetData(31002),
                 PVPower2 = await GetData(31005),
@@ -46,8 +53,12 @@ namespace FoxessWebbus.Web.Services
                 InverterTemp = await FormatTemp(31018),
                 FeedIn = await RelativeZero(31014, true),
                 FromGrid = await RelativeZero(31014, false)
-            };
-            model.PVPowerTotal = await PVTotal(model);
+            }; */
+
+            var model = await GetData(RegisterNumbersList);
+
+            model.PVPowerTotal += model.PVPower1;
+            model.PVPowerTotal += model.PVPower2;
             model.LoggedDateTime = DateTime.Now;
 
             upload.UploadData(model);
@@ -62,94 +73,62 @@ namespace FoxessWebbus.Web.Services
             return total;
         }
 
-        //Simply divides by 10 to get the temp in correct format
-        private async Task<short> FormatTemp(ushort registerNumber)
+    
+        private async Task<H1Model> GetData(List<ushort> registerNumbers)
         {
-            var result = await GetData(registerNumber);
-            if (result.ToString().Length > 2)
-            {
-                result /= 10;
-                return result;
-            }
-
-            return result;
-
-        }
-
-        private async Task<short> GetData(ushort registerNumber)
-        {
-
+            H1Model returnModel = new H1Model();
             try
-            {
+            {       
+
                 using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 600, 5))
                 {
 
                     ReadRegistersResult data = new ReadRegistersResult();
                     Stopwatch timer = new Stopwatch();
                     await device.InitializeAsync(CancellationToken.None);
-                    timer.Start();
-
-                    for (int i = 0; i < 3; i++)
+                    
+                    int count = 0;
+                    
+                    foreach(var registerNumber in registerNumbers)
                     {
-
+                        timer.Start();
                         try
                         {
                             data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
-                            break;
+                               // if(data.Values !=)
+                            
                         }
                         catch (Exception ex)
                         {
-                            errorLog.LogError(ex.ToString(), "Register number:" + registerNumber.ToString() + " :: Packets sent: " + data.PacketsSent.ToString() + " :: Number of tries: " + i.ToString());    
+                            errorLog.LogError(ex.ToString(), "Register number:" + registerNumber.ToString() + " :: Packets sent: " + data.PacketsSent.ToString() + " :: Number of tries: " + "  Duration: " + data.Duration.ToString());    
                         }
 
+                        timer.Stop();
+                        Console.WriteLine("Time taken for " + registerNumber + ": " + timer.Elapsed + "  Duration: " + data.Duration.ToString());
+                            
 
-                    }
+                        
 
-                    if(data.Values == null)
-                    {
-                        return 0;
+                        if(data.Values != null)
+                        {
+                            foreach(var value in data.Values){
+                                returnModel.SetValue(count, value);
+                            }
+                            
+                            
+                        } 
+                        count++;
                     }
+                    device.Dispose();
                     
-                    timer.Stop();
-                    Console.WriteLine("Time taken for " + registerNumber + ": " + timer.Elapsed);
-                    foreach (var value in data.Values)
-                    {
-                        return value;
-                        // Console.Write(value);
-                    }
-                    return 0;
                 }
-            }catch(Exception ex) 
-            {
                 
-                Console.WriteLine("Error when getting data");
-                Console.WriteLine(ex.ToString());
+                return returnModel;
+            }catch(Exception ex){
                 errorLog.LogError(ex.ToString(), "UploadModelBGService");
-                return 0;
+                return returnModel;
             }
-
            
-        }
-
-
-        // This is a hacky method which returns the value only if it is either above or below zero.
-        // Because some values share a register and can be minus
-        private async Task<short> RelativeZero(ushort registerNumber, bool aboveZero)
-        {
-
-            var result = await GetData(registerNumber);
-            if (result > 0 && aboveZero == false)
-            {
-                return result;
-            }
-            else if (result < 0 && aboveZero == true)
-            {
-                result *= -1;
-                return result;
-            }
-
-            return 0;
-
         }
 
      
