@@ -5,7 +5,7 @@
 
 <h1>History</h1>
 
-  <RadzenChart>
+ @*  <RadzenChart>
                 <RadzenLineSeries Smooth="true" Data="@pvTotalDataItem" CategoryProperty="Date" Title="PV Total" LineType="LineType.Dashed" ValueProperty="Value">
                     <RadzenMarkers MarkerType="MarkerType.Square" />
                     <RadzenSeriesDataLabels Visible="true" />
@@ -23,7 +23,7 @@
                     <RadzenGridLines Visible="true" />
                     <RadzenAxisTitle Text="PV" />
                 </RadzenValueAxis>
-    </RadzenChart>
+    </RadzenChart> *@
 
 
 <div>
@@ -39,9 +39,9 @@
     private int Index = -1;
     public List<ChartSeries> Series = new List<ChartSeries>();
     public string[] XAxisLabels;
-    DataItem[] pvTotalDataItem;
+   @*  DataItem[] pvTotalDataItem;
     DataItem[] pv1DataItem;
-    DataItem[] pv2DataItem;
+    DataItem[] pv2DataItem; *@
     public ChartOptions options = new ChartOptions(){
         DisableLegend = true
         
@@ -58,12 +58,12 @@
        // options.
         var historyData = historyService.GetHistory(DateTime.Now.AddHours(-12), DateTime.Now);
 
-        pvTotalDataItem = historyData.Select(historyData => new DataItem{
+     @*    pvTotalDataItem = historyData.Select(historyData => new DataItem{
             Date = historyData.LoggedDateTime.ToString(),
             Value = historyData.PVPowerTotal
-        }).ToArray();
+        }).ToArray(); *@
 
-        pv1DataItem = historyData.Select(historyData => new DataItem{
+     @*    pv1DataItem = historyData.Select(historyData => new DataItem{
             Date = historyData.LoggedDateTime.ToString(),
             Value = historyData.PVPower1
         }).ToArray();
@@ -71,7 +71,7 @@
         pv2DataItem = historyData.Select(historyData => new DataItem{
             Date = historyData.LoggedDateTime.ToString(),
             Value = historyData.PVPower2
-        }).ToArray();
+        }).ToArray(); *@
 
         XAxisLabels = historyData.Select(x => x.LoggedDateTime.ToString()).ToArray();
         ChartSeries PVTotal = new ChartSeries(){
