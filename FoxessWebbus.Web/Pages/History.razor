@@ -1,0 +1,49 @@
+@using FoxessWebbus.Web.Services;
+@page "/history"
+
+<PageTitle>History</PageTitle>
+
+<h1>History</h1>
+
+<div>
+    <MudChart ChartType="ChartType.Line" ChartOptions="options" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
+   
+    <MudText Typo="Typo.h6">Selected portion of the chart: @Index</MudText>
+</div>
+
+
+
+@code {
+    GetHistoryBetweenDates historyService = new GetHistoryBetweenDates();
+    private int Index = -1;
+    public List<ChartSeries> Series = new List<ChartSeries>();
+    public string[] XAxisLabels;
+    public ChartOptions options = new ChartOptions(){
+        DisableLegend = true
+        
+    };
+   
+    protected override async Task OnParametersSetAsync()
+    {
+        
+       // options.
+        var historyData = historyService.GetHistory(DateTime.Now.AddDays(-1), DateTime.Now);
+
+        XAxisLabels = historyData.Select(x => x.LoggedDateTime.ToString()).ToArray();
+        ChartSeries PVTotal = new ChartSeries(){
+            Name = "PV Total",
+            Data = historyData.Select(x => Convert.ToDouble(x.PVPowerTotal)).ToArray()
+        };
+        Series.Add(PVTotal);
+        
+
+    }
+
+    public void ReloadData(DateTime startDate, DateTime endDate)
+    {
+        
+        StateHasChanged();
+    }
+
+
+}

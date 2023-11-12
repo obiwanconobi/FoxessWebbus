@@ -62,3 +62,6 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+html body div.page main article.content.px-4 div div.mud-chart.mud-chart-legend-bottom svg.mud-chart-line.mud-ltr g.mud-charts-xaxis text {
+    display:none;
+}
