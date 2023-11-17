@@ -14,6 +14,8 @@
 </EditForm> -->
 
 
+
+
 <MudContainer justify-start MaxWidth="MaxWidth.ExtraSmall">
  
     <MudGrid Spacing="1">
@@ -83,6 +85,18 @@
         </MudItem>
     </MudGrid>
    
+    <RadzenArcGauge Style="width: 100%; height: 250px;">
+        <RadzenArcGaugeScale Step="500" Min="0" Max="4000" MinorStep="10" Radius="1.5" TickPosition=GaugeTickPosition.Inside Y="0.9" Margin="0">
+            <RadzenArcGaugeScaleValue Value=@gaugeValue ShowValue=true>
+                <Template Context="pointer">
+                    <h4>
+                        @pointer.Value <sup>kw/h</sup>
+                    </h4>
+                </Template>
+            </RadzenArcGaugeScaleValue>
+        </RadzenArcGaugeScale>
+    </RadzenArcGauge>
+
 </MudContainer>
 
 
@@ -116,7 +130,7 @@
 @code{
     public H1Model model = null;
     public short total = 0;
-
+    public double gaugeValue = 0;
     UploadModelData upload = new UploadModelData();
 
     public string? PollTime { get; set; } = "";
@@ -140,32 +154,21 @@
 
 
     protected async void Upload(H1Model model){
-       // upload.UploadData(model);
+        // upload.UploadData(model);
     }    
 
     protected override async Task OnParametersSetAsync()
     {
 
-            GetLatestDataService dataService = new GetLatestDataService();
-            var resultgg = dataService.GetData();
+        GetLatestDataService dataService = new GetLatestDataService();
+        var resultgg = dataService.GetData();
 
-            Stopwatch watch = new Stopwatch();
+        Stopwatch watch = new Stopwatch();
 
-            watch.Start();
-            model = resultgg;
-            //model = new H1Model(){
-            //PVPower1 = await GetData(31002),
-            //PVPower2 = await GetData(31005), 
-            //BatteryCharge = await RelativeZero(31022, true),
-            //BatteryDischarge = await RelativeZero(31022, false),
-            //BatterySoc = await GetData(31024),
-            //BatteryTemp = await FormatTemp(31023),
-            //InverterTemp = await FormatTemp(31018),
-            //FeedIn = await RelativeZero(31014, true),
-            //FromGrid = await RelativeZero(31014, false)
-            //};
-            //model.PVPowerTotal = await PVTotal(model);
-            //model.LoggedDateTime = DateTime.Now;
+        watch.Start();
+        model = resultgg;
+        gaugeValue = model.PVPowerTotal;
+       
           
             CurrentBatterySoc = model.BatterySoc.ToString() + "%";
             TotalSolar = model.PVPowerTotal.ToString() + "w";
@@ -175,7 +178,7 @@
             
             watch.Stop();
 
-            Upload(model);
+            //Upload(model);
             Console.WriteLine("VERSION: 0.0.1");
 
             Console.WriteLine("Time Taken: " + watch.Elapsed);

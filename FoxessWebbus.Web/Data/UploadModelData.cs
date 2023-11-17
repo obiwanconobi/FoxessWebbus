@@ -34,24 +34,7 @@ public class UploadModelData{
 
             };
             
-            try{
-                using (var command = context.Database.GetDbConnection().CreateCommand())
-                {
-                    command.CommandText = "SELECT name from sqlite_master WHERE type='table'";
-                    context.Database.OpenConnection();
-                    using (var result = command.ExecuteReader())
-                    {
-                        while (result.Read())
-                        {
-                            Console.WriteLine(result.GetString(0));
-                        }
-                    }
-                }
-            }catch(Exception ex){
-                Console.WriteLine("Error listing tables");
-            }
-
-
+            
             try{
                 context.FoxH1.Add(dbModel);
                 await context.SaveChangesAsync();
