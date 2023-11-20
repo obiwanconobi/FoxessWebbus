@@ -1,0 +1,41 @@
+﻿@page "/daily"
+@using FoxessWebbus.Web.Services;
+@using Data;
+<h3>DailyStats</h3>
+
+
+@if(listModel == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <RadzenDataGrid Data="@listModel" TItem="H1DailyModel">
+        <Columns>
+            <RadzenDataGridColumn TItem="H1DailyModel" Property="Solar" Title="Solar" />
+            <RadzenDataGridColumn TItem="H1DailyModel" Property="Grid" Title="Grid" />
+            <RadzenDataGridColumn TItem="H1DailyModel" Property="Feed" Title="Feed" />
+            <RadzenDataGridColumn TItem="H1DailyModel" Property="BatteryCharge" Title="BatteryCharge" />
+            <RadzenDataGridColumn TItem="H1DailyModel" Property="BatteryDischarge" Title="BatteryDischarge" />
+            <RadzenDataGridColumn TItem="H1DailyModel" Property="Yield" Title="Yield" />
+            <RadzenDataGridColumn TItem="H1DailyModel" Property="Load" Title="Load" />
+            <RadzenDataGridColumn TItem="H1DailyModel" Property="EntryDate" Title="EntryDate" />
+        </Columns>
+    </RadzenDataGrid>
+}
+
+   
+@code {
+    GetDailyStatisticsService getDailyStatisticsService = new GetDailyStatisticsService();
+    public IEnumerable<H1DailyModel> listModel;
+    protected override async Task OnParametersSetAsync()
+    {
+
+
+        listModel = getDailyStatisticsService.GetData();
+
+
+
+    }
+
+}

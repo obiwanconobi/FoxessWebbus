@@ -43,20 +43,6 @@ builder.Services.AddQuartz(q =>
 });
 
 
-//builder.Services.AddQuartz(q =>
-//{
-//    // Just use the name of your job that you created in the Jobs folder.
-//    var jobKey = new JobKey("DailyStatisticsService");
-//    q.AddJob<DailyStatisticsService>(opts => opts.WithIdentity(jobKey));
-
-//    q.AddTrigger(opts => opts
-//        .ForJob(jobKey)
-//        .WithIdentity("SendEmailJob-trigger")
-//        //This Cron interval can be described as "run every minute" (when second is zero)
-//        .WithCronSchedule("6 59 23 ? * *")
-//    );
-//});
-
 
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
