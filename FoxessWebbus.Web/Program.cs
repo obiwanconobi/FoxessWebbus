@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-
+builder.Services.AddControllers();
 builder.Services.AddMudServices();
 
 
@@ -28,6 +28,7 @@ builder.Services.AddQuartz(q =>
         .WithIdentity("RTStats-trigger")
         //This Cron interval can be described as "run every minute" (when second is zero)
         .WithCronSchedule("0 * * ? * *")
+    //  .WithInterval(Interval.Seconds(10))
     );
 
 
@@ -37,9 +38,8 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(optss => optss
         .ForJob(jobKey2)
         .WithIdentity("DailyStats-trigger")
-        //This Cron interval can be described as "run every minute" (when second is zero)
-        .WithCronSchedule("6 58 23 ? * *")
-    );
+        .WithSimpleSchedule()
+    ); ;
 });
 
 
@@ -65,7 +65,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
