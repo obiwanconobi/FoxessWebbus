@@ -5,6 +5,7 @@ using System.Diagnostics;
 using ntfy;
 using ntfy.Requests;
 using ntfy.Actions;
+using FoxessWebbus.Web.Shared;
 
 namespace FoxessWebbus.Web.Services
 {
@@ -19,7 +20,7 @@ namespace FoxessWebbus.Web.Services
             try
             {
 
-                using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 600, 5))
+                using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, SettingsHelper.ReadAppSetting<string>("ModbusIP"), 502, 600, 5))
                 {
 
                     ReadRegistersResult data = new ReadRegistersResult();

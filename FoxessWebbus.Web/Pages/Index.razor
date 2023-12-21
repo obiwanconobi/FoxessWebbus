@@ -15,7 +15,7 @@
 
 
 <MudStack Row="!mobile">
-<MudContainer justify-start MaxWidth="MaxWidth.ExtraSmall">
+<MudContainer justify-start MaxWidth="MaxWidth.ExtraSmall" style="margin-left:none;margin-right:none;">
  
     <MudGrid Spacing="1">
         <MudItem xs="4">
@@ -101,7 +101,7 @@
 
 </MudContainer>
 
-   <RadzenCard Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
+   <RadzenCard Class="rz-my-12" Style="max-width: 620px">
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
             <RadzenIcon Icon="solar_power" IconColor="@Radzen.Colors.Success" style="font-size:500" />
             <RadzenStack Gap="0">
@@ -320,7 +320,7 @@
     }
 
     private async Task<short> GetData(ushort registerNumber){
-        using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, "192.168.1.11", 502, 1000, 5))
+        using (ModbusRTUDevice device = new ModbusRTUDevice(247, ConnectionMethod.TCP, SettingsHelper.ReadAppSetting<string>("ModbusIP"), 502, 1000, 5))
         {
                 Stopwatch timer = new Stopwatch();
                 await device.InitializeAsync(CancellationToken.None);

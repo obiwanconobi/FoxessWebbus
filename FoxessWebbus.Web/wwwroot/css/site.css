@@ -65,3 +65,7 @@ a, .btn-link {
 html body div.page main article.content.px-4 div div.mud-chart.mud-chart-legend-bottom svg.mud-chart-line.mud-ltr g.mud-charts-xaxis text {
     display:none;
 }
+.mud-container.mud-container-maxwidth-xs{
+    margin-left:inherit!important;
+    margin-right:inherit!important;
+}

@@ -7,7 +7,10 @@
     <InputText @bind-Value="PollTime" />
     <button type="submit">Submit</button>
 </EditForm> 
-
+<EditForm Model="@ModbusIP" OnSubmit="@SubmitModbusIP">
+    <InputText @bind-Value="ModbusIP" />
+    <button type="submit">Submit</button>
+</EditForm> 
 
 <EditForm Model="@NTFYServer" OnSubmit="@SubmitNTFYServer">
     <InputText @bind-Value="NTFYServer" />
@@ -23,14 +26,19 @@
 @code{
     public string? PollTime { get; set; } = "";
     public string? NTFYServer {get;set;} = "";
+    public string? ModbusIP {get;set;} = "";
 
 
     protected override async Task OnParametersSetAsync()
     {
         PollTime = SettingsHelper.ReadAppSetting<int>("PollTime");
         NTFYServer = SettingsHelper.ReadAppSetting<string>("NTFYServer");
+        ModbusIP = SettingsHelper.ReadAppSetting<string>("ModbusIP");
     }
 
+     private void SubmitModbusIP(){
+        SettingsHelper.AddOrUpdateAppSetting<string>("ModbusIP", ModbusIP.ToString());
+    }
     private void SubmitNTFYServer(){
         SettingsHelper.AddOrUpdateAppSetting<string>("NTFYServer", NTFYServer.ToString());
     }
