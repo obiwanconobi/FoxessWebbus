@@ -144,35 +144,6 @@
 </MudStack>
 
 
-
-
-
-
-
-@if(model == null){
-    <h1>loading...</h1>
-}else{
-    <h3>@model.LoggedDateTime</h3>
-    <h1>Solar</h1>
-    <h2>PV Power: @model.PVPowerTotal wh</h2>
-    <h2>PV 1: @model.PVPower1 wh</h2>
-    <h2>PV 2: @model.PVPower2 wh</h2>
-
-    <h1>Battery</h1>
-    <h2>Battery Soc: @model.BatterySoc %</h2>
-    <h2>Battery Temp: @model.BatteryTemp c</h2>
-    <h2>Battery Charge: @model.BatteryCharge w</h2>
-    <h2>Battery Discharge: @model.BatteryDischarge w</h2>
-
-    <h1>Inverter</h1>
-    <h2>Feed In: @model.FeedIn wh</h2>
-    <h2>From Grid: @model.FromGrid wh</h2>
-    <h2>Inverter Temp: @model.InverterTemp c</h2>
-
-}
-
-
-
 @code{
     public H1Model model = null;
     public short total = 0;
