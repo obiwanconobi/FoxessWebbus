@@ -28,9 +28,17 @@ else
 @code {
     GetDailyStatisticsService getDailyStatisticsService = new GetDailyStatisticsService();
     public IEnumerable<H1DailyModel> listModel;
+    DailyStatsRTService RTService = new DailyStatsRTService();
+    NTFYService ntfyService = new NTFYService();
+    List<ushort> RegisterNumbersList = new List<ushort>(){
+            32002,32014,32011,32005, 32008, 32017,32023
+        };
+    
     protected override async Task OnParametersSetAsync()
     {
-
+        
+        var result = await RTService.GetData(RegisterNumbersList);
+        
 
         listModel = getDailyStatisticsService.GetData();
 

@@ -34,12 +34,12 @@ builder.Services.AddQuartz(q =>
 
     var jobKey2 = new JobKey("DailyStatisticsService");
     q.AddJob<DailyStatisticsService>(opts => opts.WithIdentity(jobKey2));
-
+   
     q.AddTrigger(optss => optss
         .ForJob(jobKey2)
         .WithIdentity("DailyStats-trigger")
-        .WithSimpleSchedule()
-    ); ;
+        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(23, 55))
+    ); 
 });
 
 

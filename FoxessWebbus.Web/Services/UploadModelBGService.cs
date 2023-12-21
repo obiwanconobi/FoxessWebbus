@@ -89,6 +89,9 @@ namespace FoxessWebbus.Web.Services
                     
                     int count = 0;
                     
+                    var data22 = await device.ReadHoldingRegistersAsync(32005, 1, CancellationToken.None);
+
+
                     foreach(var registerNumber in registerNumbers)
                     {
                         timer.Start();
