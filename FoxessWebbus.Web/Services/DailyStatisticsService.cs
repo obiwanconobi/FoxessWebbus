@@ -26,7 +26,7 @@ namespace FoxessWebbus.Web.Services
             upload.UploadData(model);
 
             string messageText = "Solar Total: " + model.Solar + " ¦  Grid Total: " + model.Grid;
-            ntfyService.SendNotification(messageText);
+            await ntfyService.SendNotification(messageText);
 
         }
 

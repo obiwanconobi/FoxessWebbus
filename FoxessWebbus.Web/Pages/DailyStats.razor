@@ -10,6 +10,39 @@
 }
 else
 {
+
+    <RadzenCard Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+            <RadzenIcon Icon="solar_power" IconColor="@Radzen.Colors.Success" style="font-size:500" />
+            <RadzenStack Gap="0">
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Solar</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@order?.Solar</b></RadzenText>
+            </RadzenStack>
+        </RadzenStack>
+        <RadzenCard class="rz-background-color-primary-light rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding));">
+            <RadzenText TextStyle="TextStyle.H6" class="rz-color-on-primary-light"><strong>Battery Information</strong></RadzenText>
+            <RadzenRow RowGap="0">
+                <RadzenColumn SizeSM="4">
+                    <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Charge</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(order?.BatteryCharge)</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Discharge</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(order?.BatteryDischarge)</b></RadzenText>
+                </RadzenColumn>
+                <RadzenColumn SizeSM="8">
+                    <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Feed In</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(order?.Feed)</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Grid</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@order?.Grid</b></RadzenText>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenCard>
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0">
+            <RadzenButton Variant="Radzen.Variant.Text" class="rz-text-secondary-color" Text="Cancel" />
+            <RadzenButton Variant="Radzen.Variant.Text" Text="Send" />
+        </RadzenStack>
+    </RadzenCard>
+
+
     <RadzenDataGrid Data="@listModel" TItem="H1DailyModel">
         <Columns>
             <RadzenDataGridColumn TItem="H1DailyModel" Property="Solar" Title="Solar" />
@@ -29,15 +62,23 @@ else
     GetDailyStatisticsService getDailyStatisticsService = new GetDailyStatisticsService();
     public IEnumerable<H1DailyModel> listModel;
     DailyStatsRTService RTService = new DailyStatsRTService();
+    H1DailyModel order;
     NTFYService ntfyService = new NTFYService();
     List<ushort> RegisterNumbersList = new List<ushort>(){
             32002,32014,32011,32005, 32008, 32017,32023
         };
     
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        order = await RTService.GetData(RegisterNumbersList);
+    }
+
     protected override async Task OnParametersSetAsync()
     {
         
-        var result = await RTService.GetData(RegisterNumbersList);
+        
         
 
         listModel = getDailyStatisticsService.GetData();

@@ -12,7 +12,7 @@
         public decimal BatteryDischarge { get; set; }
         public decimal Yield { get; set; }
         public decimal Load { get; set; }
-
+    
         public void SetValue(int count, short val)
         {
             switch (count)
