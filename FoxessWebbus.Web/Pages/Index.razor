@@ -143,6 +143,7 @@
     public string? CurrentBatterySoc {get;set;} = "";
     public MudBlazor.Color batteryColorIndicator {get;set;} = Color.Success;
     public MudBlazor.Color gridColorIndicator {get;set;} = Color.Success;
+    
 
 
     private void Submit()
@@ -159,6 +160,11 @@
 
     protected override async Task OnParametersSetAsync()
     {
+
+        @* SettingsHelper shelper = new SettingsHelper();
+        var result = shelper.ReadAppSetting<>("PollTime"); *@
+
+
 
         GetLatestDataService dataService = new GetLatestDataService();
         var resultgg = dataService.GetData();

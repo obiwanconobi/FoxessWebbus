@@ -1,0 +1,50 @@
+@page "/settings"
+@using FoxessWebbus.Web.Services;
+@using Data;
+<h3>Settings</h3>
+
+<EditForm Model="@PollTime" OnSubmit="@SubmitPollTime">
+    <InputText @bind-Value="PollTime" />
+    <button type="submit">Submit</button>
+</EditForm> 
+
+
+<EditForm Model="@NTFYServer" OnSubmit="@SubmitNTFYServer">
+    <InputText @bind-Value="NTFYServer" />
+    <button type="submit">Submit</button>
+</EditForm> 
+
+<EditForm Model="@NTFYServer" OnSubmit="@TestNTFYServer">
+    <button type="submit">Test</button>
+</EditForm> 
+
+
+
+@code{
+    public string? PollTime { get; set; } = "";
+    public string? NTFYServer {get;set;} = "";
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        PollTime = SettingsHelper.ReadAppSetting<int>("PollTime");
+        NTFYServer = SettingsHelper.ReadAppSetting<string>("NTFYServer");
+    }
+
+    private void SubmitNTFYServer(){
+        SettingsHelper.AddOrUpdateAppSetting<string>("NTFYServer", NTFYServer.ToString());
+    }
+
+    private async void TestNTFYServer(){
+        NTFYService ntfyService = new NTFYService();
+        await ntfyService.SendNotification("Test Notification");
+    }
+
+    private void SubmitPollTime()
+        {
+            SettingsHelper.AddOrUpdateAppSetting<int>("PollTime", Convert.ToInt32(PollTime));
+            var result = SettingsHelper.ReadAppSetting<int>("PollTime");
+            // Logger.LogInformation("Model.Id = {Id}", Model?.Id);
+        }
+}
+   

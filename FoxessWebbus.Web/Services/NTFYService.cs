@@ -1,3 +1,4 @@
+using FoxessWebbus.Web.Shared;
 using ntfy;
 using ntfy.Actions;
 using ntfy.Requests;
@@ -5,8 +6,11 @@ using ntfy.Requests;
 public class NTFYService{
 
     public async Task SendNotification(string messageText){
+        
+        
 
-         var client = new Client("https://ntfy.connerpanaro.com");
+
+         var client = new Client(SettingsHelper.ReadAppSetting<string>("NTFYServer"));
                 
                 // Publish a message to the "test" topic
                 var message = new SendingMessage

@@ -12,7 +12,10 @@ namespace FoxessWebbus.Web.Shared
                 var filePath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
                 string json = File.ReadAllText(filePath);
                 dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-                return jsonObj.PollTime.ToString();
+                dynamic propertyValue = jsonObj[selectionPathKey];
+                return propertyValue.Value.ToString();
+
+              //  return jsonObj.PollTime.ToString();
 
             }catch(Exception ex)
             {
