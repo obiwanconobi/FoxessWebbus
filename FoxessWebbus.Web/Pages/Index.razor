@@ -106,9 +106,9 @@
             <RadzenIcon Icon="solar_power" IconColor="@Radzen.Colors.Success" style="font-size:500" />
             <RadzenStack Gap="0">
                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">PV 1</RadzenText>
-                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.PVPower1)kwh</b></RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.PVPower1)W⋅h</b></RadzenText>
                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">PV 2</RadzenText>
-                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.PVPower2)kwh</b></RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.PVPower2)W⋅h</b></RadzenText>
             </RadzenStack>
         </RadzenStack>
         <RadzenCard class="rz-background-color-primary-light rz-shadow-0 rz-bmodel-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding));">
@@ -116,7 +116,7 @@
             <RadzenRow RowGap="0">
                 <RadzenColumn SizeSM="4">
                     <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Charge</RadzenText>
-                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(model?.BatteryCharge)kwh</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(model?.BatteryCharge)W⋅h</b></RadzenText>
                     <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Discharge</RadzenText>
                     <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(model?.BatteryDischarge)khw</b></RadzenText>
                 </RadzenColumn>
@@ -134,9 +134,9 @@
                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Inverter Temp</RadzenText>
                 <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.InverterTemp)c</b></RadzenText>
                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Feed In</RadzenText>
-                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.FeedIn)kwh</b></RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.FeedIn)W⋅h</b></RadzenText>
                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">From Grid</RadzenText>
-                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.FromGrid)kwh</b></RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.FromGrid)W⋅h</b></RadzenText>
             </RadzenStack>
         </RadzenStack>
       
