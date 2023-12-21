@@ -14,8 +14,7 @@
 </EditForm> -->
 
 
-
-
+<MudStack Row="!mobile">
 <MudContainer justify-start MaxWidth="MaxWidth.ExtraSmall">
  
     <MudGrid Spacing="1">
@@ -85,7 +84,7 @@
         </MudItem>
     </MudGrid>
    
-    <RadzenArcGauge Style="width: 100%; height: 250px;">
+ @*    <RadzenArcGauge Style="width: 100%; height: 250px;">
         <RadzenArcGaugeScale Step="500" Min="0" Max="4000" MinorStep="10" Radius="1.5" TickPosition=GaugeTickPosition.Inside Y="0.9" Margin="0">
             <RadzenArcGaugeScaleValue Value=@gaugeValue ShowValue=true>
                 <Template Context="pointer">
@@ -95,9 +94,56 @@
                 </Template>
             </RadzenArcGaugeScaleValue>
         </RadzenArcGaugeScale>
-    </RadzenArcGauge>
+    </RadzenArcGauge> *@
+
+   
+
 
 </MudContainer>
+
+   <RadzenCard Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+            <RadzenIcon Icon="solar_power" IconColor="@Radzen.Colors.Success" style="font-size:500" />
+            <RadzenStack Gap="0">
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">PV 1</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.PVPower1)kwh</b></RadzenText>
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">PV 2</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.PVPower2)kwh</b></RadzenText>
+            </RadzenStack>
+        </RadzenStack>
+        <RadzenCard class="rz-background-color-primary-light rz-shadow-0 rz-bmodel-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding));">
+            <RadzenText TextStyle="TextStyle.H6" class="rz-color-on-primary-light"><strong>Battery Information</strong></RadzenText>
+            <RadzenRow RowGap="0">
+                <RadzenColumn SizeSM="4">
+                    <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Charge</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(model?.BatteryCharge)kwh</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Discharge</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(model?.BatteryDischarge)khw</b></RadzenText>
+                </RadzenColumn>
+                <RadzenColumn SizeSM="8">
+                    <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Battery Soc</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(model?.BatterySoc)%</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Battery Temp</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(model?.BatteryTemp)c</b></RadzenText>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenCard>
+         <RadzenStack Orientation="Radzen.Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+            <RadzenIcon Icon="solar_power" IconColor="@Radzen.Colors.Success" style="font-size:500" />
+            <RadzenStack Gap="0">
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Inverter Temp</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.InverterTemp)c</b></RadzenText>
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Feed In</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.FeedIn)kwh</b></RadzenText>
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">From Grid</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1"><b>@(model?.FromGrid)kwh</b></RadzenText>
+            </RadzenStack>
+        </RadzenStack>
+      
+    </RadzenCard>
+</MudStack>
+
+
 
 
 
@@ -143,6 +189,9 @@
     public string? CurrentBatterySoc {get;set;} = "";
     public MudBlazor.Color batteryColorIndicator {get;set;} = Color.Success;
     public MudBlazor.Color gridColorIndicator {get;set;} = Color.Success;
+     private string isDevice { get; set; }
+    private bool mobile { get; set; }
+
     
 
 
@@ -158,13 +207,15 @@
         // upload.UploadData(model);
     }    
 
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        mobile = await JS.InvokeAsync<bool>("isDevice");
+        isDevice = mobile ? "Mobile" : "Desktop";
+        StateHasChanged();
+    }
+
+   
     protected override async Task OnParametersSetAsync()
     {
-
-        @* SettingsHelper shelper = new SettingsHelper();
-        var result = shelper.ReadAppSetting<>("PollTime"); *@
-
-
 
         GetLatestDataService dataService = new GetLatestDataService();
         var resultgg = dataService.GetData();
