@@ -28,20 +28,28 @@ namespace FoxessWebbus.Web.Services
                     await device.InitializeAsync(CancellationToken.None);
 
                     int count = 0;
+                    
 
                     foreach (var registerNumber in registerNumbers)
                     {
+                        int errorCount = 0;
+                        bool success = false;
                         timer.Start();
-                        try
-                        {
-                            data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
-                            // if(data.Values !=)
-
+                        while(!success && errorCount > 3){
+                            try
+                            {
+                                data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
+                                success = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                errorCount++;
+                                errorLog.LogError("Error gettting data for DailyStatsRTService for register number: " + registerNumber + " :: Error Count: " + errorCount, "DailyStatsRTService");
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            errorLog.LogError(ex.ToString(), "Register number:" + registerNumber.ToString() + " :: Packets sent: " + data.PacketsSent.ToString() + " :: Number of tries: " + "  Duration: " + data.Duration.ToString());
-                        }
+                        
+                        success = false;
+    
 
                         timer.Stop();
                         Console.WriteLine("Time taken for " + registerNumber + ": " + timer.Elapsed + "  Duration: " + data.Duration.ToString());

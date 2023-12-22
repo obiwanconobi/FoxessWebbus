@@ -38,7 +38,7 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(optss => optss
         .ForJob(jobKey2)
         .WithIdentity("DailyStats-trigger")
-        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(23, 55))
+        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(23, 58))
     ); 
 });
 
