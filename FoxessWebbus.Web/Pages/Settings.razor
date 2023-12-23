@@ -3,15 +3,18 @@
 @using Data;
 <h3>Settings</h3>
 
+<MudText Typo="Typo.body1">Poll Time: </MudText>
 <EditForm Model="@PollTime" OnSubmit="@SubmitPollTime">
     <InputText @bind-Value="PollTime" />
     <button type="submit">Submit</button>
 </EditForm> 
+<MudText Typo="Typo.body1">Modbus IP: </MudText>
 <EditForm Model="@ModbusIP" OnSubmit="@SubmitModbusIP">
     <InputText @bind-Value="ModbusIP" />
     <button type="submit">Submit</button>
 </EditForm> 
 
+<MudText Typo="Typo.body1">NTFY Server: </MudText>
 <EditForm Model="@NTFYServer" OnSubmit="@SubmitNTFYServer">
     <InputText @bind-Value="NTFYServer" />
     <button type="submit">Submit</button>
