@@ -69,3 +69,32 @@ html body div.page main article.content.px-4 div div.mud-chart.mud-chart-legend-
     margin-left:inherit!important;
     margin-right:inherit!important;
 }
+.line-6 {
+    width: 140px;
+    height: 47px;
+    border-bottom: 1px solid rgb(0, 255, 106);
+    
+    left:-42px;
+    z-index:3;
+    animation: pulse 1s infinite alternate;
+}
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+      border-bottom: 1px solid rgb(0, 255, 106);
+      box-shadow: 0px 10px 0px rgb(0, 255, 106);
+    }
+    100% {
+      transform: scale(1);
+      border-bottom: 2px solid rgb(0, 255, 106);
+      box-shadow: 0px 10px 0px rgb(0, 255, 106);
+    }
+  }
+
+  .pulse-on {
+    animation-play-state: running;
+  }
+
+  .pulse-off {
+    animation-play-state: paused;
+  }

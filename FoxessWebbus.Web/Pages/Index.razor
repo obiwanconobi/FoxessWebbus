@@ -15,14 +15,14 @@
 
 
 <MudStack Row="!mobile">
-<MudContainer justify-start MaxWidth="MaxWidth.ExtraSmall" style="margin-left:none;margin-right:none;">
+<MudContainer justify-start MaxWidth="MaxWidth.ExtraSmall" style="margin-left:none;margin-right:none;z-index:1;">
  
     <MudGrid Spacing="1">
         <MudItem xs="4">
             <MudPaper Height="100px" Width="100px" Style="box-shadow:none" />
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none;z-index: 2;">
                 <MudAvatar Color="Color.Success" Size="Size.Large"  Variant="MudBlazor.Variant.Filled" Style="">
                     <MudIcon Color="Color.Default" Style="object-position: center;" Icon="@Icons.Material.Rounded.SolarPower" Size="Size.Large" />
                 </MudAvatar>
@@ -37,7 +37,7 @@
             <MudPaper Height="100px" Width="100px" Style="box-shadow:none"/>
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none;z-index: 2;">
                 <MudAvatar Color="gridColorIndicator" Size="Size.Large" Variant="MudBlazor.Variant.Filled">
                     <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.ElectricalServices" Size="Size.Large" />
                 </MudAvatar>
@@ -48,12 +48,12 @@
             </MudPaper>
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
-                
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none;">
+             <!--   <div class="line-6 pulse-on"></div>-->
             </MudPaper>
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none;z-index: 2;">
                 <MudAvatar Color="Color.Info" Size="Size.Large" Variant="MudBlazor.Variant.Filled">
                     <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.House" Size="Size.Large" />
                 </MudAvatar>
@@ -67,11 +67,11 @@
             <MudPaper Height="100px" Width="100px" Style="box-shadow:none" />
         </MudItem>
         <MudItem xs="4">
-            <MudPaper Height="100px" Width="100px" Style="box-shadow:none">
+            <MudPaper Height="100px" Width="100px" Style="box-shadow:none;z-index: 2;">
                 <MudAvatar Style="display:grid;" Color="@batteryColorIndicator" Size="Size.Large" Variant="MudBlazor.Variant.Filled">
                     <MudIcon Color="Color.Default" Icon="@Icons.Material.Rounded.BatteryStd" Size="Size.Large" />
                     <br/>
-                    <MudText Align="Align.Center" Typo="Typo.caption">@CurrentBatterySoc</MudText>
+                    <MudText Align="Align.Center" style="z-index: var(6);" Typo="Typo.caption">@CurrentBatterySoc</MudText>
                 </MudAvatar>
                  <br/>
                 <MudText Align="Align.Center" Style="padding-left:12px" Typo="Typo.overline">Battery</MudText>
@@ -229,6 +229,7 @@
         if (model.FromGrid > 5){
             if(model.FromGrid > 20){
                 gridColorIndicator = Color.Warning;
+                return model.FromGrid.ToString();
             }
             
             return model.FeedIn.ToString();
