@@ -5,10 +5,12 @@ html, body {
 }
 .main-body{
     font-family: 'Electrolize', sans-serif;
+    min-height: 100vh;
     background: 
     -webkit-linear-gradient(rgba(135, 60, 255, 1), rgba(135, 60, 255, 0.0) 0%),
     -webkit-linear-gradient(-45deg, rgba(120, 155, 255, 0.9) 45%, rgba(105, 102, 219, 0.9) 0%);
-    }
+};
+    
 
 h1:focus {
     outline: none;
