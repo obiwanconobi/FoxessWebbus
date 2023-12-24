@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using MudBlazor.Services;
 using FoxessWebbus.Web.Services;
 using Quartz;
+using FoxessWebbus.Web.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,9 +27,9 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(opts => opts
         .ForJob(jobKey)
         .WithIdentity("RTStats-trigger")
-        //This Cron interval can be described as "run every minute" (when second is zero)
-        .WithCronSchedule("0 * * ? * *")
-    //  .WithInterval(Interval.Seconds(10))
+        .WithSimpleSchedule(x => x
+            .WithIntervalInSeconds(Convert.ToInt32(SettingsHelper.ReadAppSetting<int>("PollTime")))
+            .RepeatForever())
     );
 
 

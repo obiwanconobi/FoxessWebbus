@@ -24,38 +24,19 @@ namespace FoxessWebbus.Web.Services
 
         public async Task Execute(IJobExecutionContext context)
         {
-            int count = 0;
 
-            while(count < 6) 
-            {
                 Stopwatch timer = new Stopwatch();
                 timer.Start();
                 await Upload();
                 timer.Stop();
                 Console.WriteLine("Time Taken for Get Data to DB: " + timer.Elapsed);
-                count++;
-                Thread.Sleep(10000);
-            }
-            Console.WriteLine("Run through complete");
+            
         }
 
          
 
         public async Task Upload()
         {
-            /* var model = new H1Model()
-            {
-                PVPower1 = await GetData(31002),
-                PVPower2 = await GetData(31005),
-                BatteryCharge = await RelativeZero(31022, true),
-                BatteryDischarge = await RelativeZero(31022, false),
-                BatterySoc = await GetData(31024),
-                BatteryTemp = await FormatTemp(31023),
-                InverterTemp = await FormatTemp(31018),
-                FeedIn = await RelativeZero(31014, true),
-                FromGrid = await RelativeZero(31014, false)
-            }; */
-
             var model = await GetData(RegisterNumbersList);
 
             model.PVPowerTotal += model.PVPower1;

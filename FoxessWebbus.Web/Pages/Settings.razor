@@ -5,8 +5,11 @@
 
 <MudText Typo="Typo.body1">Poll Time: </MudText>
 <EditForm Model="@PollTime" OnSubmit="@SubmitPollTime">
+     <DataAnnotationsValidator />
     <InputText @bind-Value="PollTime" />
+    <ValidationMessage For="() => PollTime"></ValidationMessage>
     <button type="submit">Submit</button>
+    
 </EditForm> 
 <MudText Typo="Typo.body1">Modbus IP: </MudText>
 <EditForm Model="@ModbusIP" OnSubmit="@SubmitModbusIP">
@@ -27,6 +30,7 @@
 
 
 @code{
+    [System.ComponentModel.DataAnnotations.Required]
     public string? PollTime { get; set; } = "";
     public string? NTFYServer {get;set;} = "";
     public string? ModbusIP {get;set;} = "";
@@ -53,8 +57,11 @@
 
     private void SubmitPollTime()
         {
-            SettingsHelper.AddOrUpdateAppSetting<int>("PollTime", Convert.ToInt32(PollTime));
-            var result = SettingsHelper.ReadAppSetting<int>("PollTime");
+            if(int.TryParse(PollTime, out int value)){
+                SettingsHelper.AddOrUpdateAppSetting<int>("PollTime", Convert.ToInt32(PollTime));
+                var result = SettingsHelper.ReadAppSetting<int>("PollTime");
+            }
+           
             // Logger.LogInformation("Model.Id = {Id}", Model?.Id);
         }
 }
