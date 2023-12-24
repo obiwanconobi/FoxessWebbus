@@ -39,3 +39,5 @@ services:
 The service gets real-time data from the Inverter via modbus with an interval time in settings.
 There is a daily service which logs the days stats.
 
+![Home Page](https://raw.githubusercontent.com/obiwanconobi/obiwanconobi/main/Home.PNG)
+![Daily Stats](https://raw.githubusercontent.com/obiwanconobi/obiwanconobi/main/Daily.PNG)
