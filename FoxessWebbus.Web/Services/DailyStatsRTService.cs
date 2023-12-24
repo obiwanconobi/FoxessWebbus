@@ -35,7 +35,7 @@ namespace FoxessWebbus.Web.Services
                         int errorCount = 0;
                         bool success = false;
                         timer.Start();
-                        while(!success && errorCount > 3){
+                        while(!success && errorCount < 4){
                             try
                             {
                                 data = await device.ReadHoldingRegistersAsync(registerNumber, 1, CancellationToken.None);
