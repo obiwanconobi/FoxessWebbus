@@ -24,6 +24,17 @@
                     <RadzenAxisTitle Text="PV" />
                 </RadzenValueAxis>
     </RadzenChart> *@
+<div class="rz-p-12 rz-text-align-center">
+    <RadzenLabel Text="Start Date" Component="DatePickerWithTime" Style="margin-right: 8px; vertical-align: middle;" />
+    <RadzenDatePicker @bind-Value=@startDateTime ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Name="DatePickerWithTime" />
+
+     <RadzenLabel Text="End Date" Component="DatePickerWithTime" Style="margin-right: 8px; vertical-align: middle;" />
+    <RadzenDatePicker @bind-Value=@endDateTime ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Name="DatePickerWithTime" />
+
+    <MudButton @onclick="ReloadData" Variant="MudBlazor.Variant.Filled">Refresh</MudButton>
+</div>
+
+
 
 
 <div>
@@ -38,6 +49,10 @@
     GetHistoryBetweenDates historyService = new GetHistoryBetweenDates();
     private int Index = -1;
     public List<ChartSeries> Series = new List<ChartSeries>();
+    DateTime startDateTime = DateTime.Now.AddHours(-12);
+
+    DateTime endDateTime = DateTime.Now;
+
     public string[] XAxisLabels;
    @*  DataItem[] pvTotalDataItem;
     DataItem[] pv1DataItem;
@@ -51,42 +66,10 @@
         public string Date { get; set; }
         public double Value { get; set; }
     }
-   
-    protected override async Task OnParametersSetAsync()
-    {
-        
-       // options.
-        var historyData = historyService.GetHistory(DateTime.Now.AddHours(-12), DateTime.Now);
+    
+    public async void GetHistoryData(){
 
-     @*    pvTotalDataItem = historyData.Select(historyData => new DataItem{
-            Date = historyData.LoggedDateTime.ToString(),
-            Value = historyData.PVPowerTotal
-        }).ToArray(); *@
-
-     @*    pv1DataItem = historyData.Select(historyData => new DataItem{
-            Date = historyData.LoggedDateTime.ToString(),
-            Value = historyData.PVPower1
-        }).ToArray();
-
-        pv2DataItem = historyData.Select(historyData => new DataItem{
-            Date = historyData.LoggedDateTime.ToString(),
-            Value = historyData.PVPower2
-        }).ToArray(); *@
-
-        @* var result = dataList
-            .GroupBy(entry => entry.Timestamp.Ticks / TimeSpan.TicksPerMinute / 10)
-            .Select(group => new IntervalAverage
-            {
-                StartTime = group.Min(entry => entry.Timestamp),
-                EndTime = group.Max(entry => entry.Timestamp),
-                AverageValue = group.Average(entry => entry.Value)
-            })
-            .ToList(); *@
-
-       @*  var histData = historyData
-        .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
-        .Select(group => group.Average(x => x.PVPowerTotal)).ToArray();
- *@
+        var historyData = historyService.GetHistory(startDateTime, endDateTime);
         XAxisLabels = historyData.GroupBy(y => y.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute /10).Select(x => x.First().LoggedDateTime.ToString()).ToArray();
         ChartSeries PVTotal = new ChartSeries(){
             Name = "PV Total",
@@ -95,13 +78,20 @@
         .Select(group => group.Average(x => x.PVPowerTotal)).ToArray()
         };
         Series.Add(PVTotal);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        
+       GetHistoryData();
         
 
     }
 
-    public void ReloadData(DateTime startDate, DateTime endDate)
+
+    public void ReloadData()
     {
-        
+        GetHistoryData();
         StateHasChanged();
     }
 
