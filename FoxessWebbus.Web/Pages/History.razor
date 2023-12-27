@@ -42,7 +42,6 @@
 <div>
     <MudChart ChartType="ChartType.Line" ChartOptions="options" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
    
-    <MudText Typo="Typo.h6">Selected portion of the chart: @Index</MudText>
 </div>
 
 
@@ -62,7 +61,8 @@
         "PV2",
         "Battery SOC",
         "Battery Charge",
-        "Battery Discharge"
+        "Battery Discharge",
+        "test"
         };
 
     public string[] XAxisLabels;
@@ -87,6 +87,14 @@
 
         switch(value) 
         {
+        case "test":
+            Series.Clear();   
+            ChartSeries PVTotal2 = new ChartSeries(){
+                Name = "PV Total",
+                Data = historyData.Select(x => Convert.ToDouble(x.PVPowerTotal)).ToArray()
+            };
+            Series.Add(PVTotal2);
+            break;
         case "PVPowerTotal":
             Series.Clear();   
             ChartSeries PVTotal = new ChartSeries(){
