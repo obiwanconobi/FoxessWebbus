@@ -73,10 +73,26 @@
             Value = historyData.PVPower2
         }).ToArray(); *@
 
-        XAxisLabels = historyData.Select(x => x.LoggedDateTime.ToString()).ToArray();
+        @* var result = dataList
+            .GroupBy(entry => entry.Timestamp.Ticks / TimeSpan.TicksPerMinute / 10)
+            .Select(group => new IntervalAverage
+            {
+                StartTime = group.Min(entry => entry.Timestamp),
+                EndTime = group.Max(entry => entry.Timestamp),
+                AverageValue = group.Average(entry => entry.Value)
+            })
+            .ToList(); *@
+
+       @*  var histData = historyData
+        .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
+        .Select(group => group.Average(x => x.PVPowerTotal)).ToArray();
+ *@
+        XAxisLabels = historyData.GroupBy(y => y.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute /10).Select(x => x.First().LoggedDateTime.ToString()).ToArray();
         ChartSeries PVTotal = new ChartSeries(){
             Name = "PV Total",
-            Data = historyData.Select(x => Convert.ToDouble(x.PVPowerTotal)).ToArray()
+            Data = historyData
+        .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
+        .Select(group => group.Average(x => x.PVPowerTotal)).ToArray()
         };
         Series.Add(PVTotal);
         
