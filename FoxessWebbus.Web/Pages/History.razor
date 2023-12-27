@@ -24,6 +24,10 @@
                     <RadzenAxisTitle Text="PV" />
                 </RadzenValueAxis>
     </RadzenChart> *@
+<div class="rz-p-sm-12 rz-text-align-center">
+    <RadzenLabel Text="Select Value" Component="DropDownBindValue" Style="margin-right: 8px; vertical-align: middle;" />
+    <RadzenDropDown @bind-Value=@value Data=@historyValues Style="width: 100%; max-width: 400px;" Name="DropDownBindValue" />
+</div>
 <div class="rz-p-12 rz-text-align-center">
     <RadzenLabel Text="Start Date" Component="DatePickerWithTime" Style="margin-right: 8px; vertical-align: middle;" />
     <RadzenDatePicker @bind-Value=@startDateTime ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Name="DatePickerWithTime" />
@@ -33,8 +37,6 @@
 
     <MudButton @onclick="ReloadData" Variant="MudBlazor.Variant.Filled">Refresh</MudButton>
 </div>
-
-
 
 
 <div>
@@ -48,10 +50,20 @@
 @code {
     GetHistoryBetweenDates historyService = new GetHistoryBetweenDates();
     private int Index = -1;
+    
     public List<ChartSeries> Series = new List<ChartSeries>();
     DateTime startDateTime = DateTime.Now.AddHours(-12);
 
     DateTime endDateTime = DateTime.Now;
+    string value = "PVPowerTotal";
+    IEnumerable<string> historyValues = new List<string>{
+        "PVPowerTotal",
+        "PV1",
+        "PV2",
+        "Battery SOC",
+        "Battery Charge",
+        "Battery Discharge"
+        };
 
     public string[] XAxisLabels;
    @*  DataItem[] pvTotalDataItem;
@@ -60,24 +72,93 @@
     public ChartOptions options = new ChartOptions(){
         DisableLegend = true
         
+        
     };
     class DataItem
     {
         public string Date { get; set; }
         public double Value { get; set; }
     }
-    
-    public async void GetHistoryData(){
 
+    public async void GetHistoryData(){
+        
         var historyData = historyService.GetHistory(startDateTime, endDateTime);
         XAxisLabels = historyData.GroupBy(y => y.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute /10).Select(x => x.First().LoggedDateTime.ToString()).ToArray();
-        ChartSeries PVTotal = new ChartSeries(){
-            Name = "PV Total",
-            Data = historyData
-        .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
-        .Select(group => group.Average(x => x.PVPowerTotal)).ToArray()
-        };
-        Series.Add(PVTotal);
+
+        switch(value) 
+        {
+        case "PVPowerTotal":
+            Series.Clear();   
+            ChartSeries PVTotal = new ChartSeries(){
+                Name = "PV Total",
+                Data = historyData
+            .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
+            .Select(group => group.Average(x => x.PVPowerTotal)).ToArray()
+            };
+            Series.Add(PVTotal);
+            break;
+        case "PV1":
+            Series.Clear();
+            ChartSeries PV1 = new ChartSeries(){
+                    Name = "PV Power 1",
+                    Data = historyData
+                .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
+                .Select(group => group.Average(x => x.PVPower1)).ToArray()
+                };
+                Series.Add(PV1);
+            // code block
+            break;
+        case "Battery SOC":
+            Series.Clear();
+            ChartSeries soc = new ChartSeries(){
+                    Name = "Battery SOC",
+                    Data = historyData
+                .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
+                .Select(group => group.Average(x => x.BatterySoc)).ToArray()
+                };
+                Series.Add(soc);
+            // code block
+            break;
+        case "PV2":
+            Series.Clear();
+            ChartSeries PV2 = new ChartSeries(){
+                    Name = "PV Total",
+                    Data = historyData
+                .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
+                .Select(group => group.Average(x => x.PVPower2)).ToArray()
+                };
+                Series.Add(PV2);
+            // code block
+            break; 
+        case "Battery Charge":
+            Series.Clear();
+            ChartSeries charge = new ChartSeries(){
+                    Name = "Battery Charge",
+                    Data = historyData
+                .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
+                .Select(group => group.Average(x => x.BatteryCharge)).ToArray()
+                };
+                Series.Add(charge);
+            // code block
+            break; 
+        case "Battery Discharge":
+            Series.Clear();
+            ChartSeries discharge = new ChartSeries(){
+                    Name = "Battery Discharge",
+                    Data = historyData
+                .GroupBy(x => x.LoggedDateTime.Ticks / TimeSpan.TicksPerMinute / 10)
+                .Select(group => group.Average(x => x.BatteryDischarge)).ToArray()
+                };
+                Series.Add(discharge);
+            // code block
+            break;          
+        default:
+            // code block
+            break;
+        }
+
+        
+        
     }
 
     protected override async Task OnParametersSetAsync()
@@ -95,5 +176,14 @@
         StateHasChanged();
     }
 
+    string FormatAsMonth(object value)
+    {
+        if (value != null)
+        {
+            return Convert.ToDateTime(value).ToString("MMM");
+        }
+
+        return string.Empty;
+    }
 
 }
