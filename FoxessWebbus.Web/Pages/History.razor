@@ -5,25 +5,6 @@
 
 <h1>History</h1>
 
- @*  <RadzenChart>
-                <RadzenLineSeries Smooth="true" Data="@pvTotalDataItem" CategoryProperty="Date" Title="PV Total" LineType="LineType.Dashed" ValueProperty="Value">
-                    <RadzenMarkers MarkerType="MarkerType.Square" />
-                    <RadzenSeriesDataLabels Visible="true" />
-                </RadzenLineSeries>
-                <RadzenLineSeries Smooth="true" Data="@pv1DataItem" CategoryProperty="Date" Title="PV 1" ValueProperty="Value">
-                    <RadzenMarkers MarkerType="MarkerType.Circle" />
-                    <RadzenSeriesDataLabels Visible="true" />
-                </RadzenLineSeries> 
-                <RadzenLineSeries Smooth="true" Data="@pv2DataItem" CategoryProperty="Date" Title="PV 2" ValueProperty="Value">
-                    <RadzenMarkers MarkerType="MarkerType.Circle" />
-                    <RadzenSeriesDataLabels Visible="true" />
-                </RadzenLineSeries> 
-                <RadzenCategoryAxis Padding="20"/>
-                <RadzenValueAxis>
-                    <RadzenGridLines Visible="true" />
-                    <RadzenAxisTitle Text="PV" />
-                </RadzenValueAxis>
-    </RadzenChart> *@
 <div class="rz-p-sm-12 rz-text-align-center">
     <RadzenLabel Text="Select Value" Component="DropDownBindValue" Style="margin-right: 8px; vertical-align: middle;" />
     <RadzenDropDown @bind-Value=@value Data=@historyValues Style="width: 100%; max-width: 400px;" Name="DropDownBindValue" />
@@ -61,8 +42,7 @@
         "PV2",
         "Battery SOC",
         "Battery Charge",
-        "Battery Discharge",
-        "test"
+        "Battery Discharge"
         };
 
     public string[] XAxisLabels;
@@ -87,14 +67,6 @@
 
         switch(value) 
         {
-        case "test":
-            Series.Clear();   
-            ChartSeries PVTotal2 = new ChartSeries(){
-                Name = "PV Total",
-                Data = historyData.Select(x => Convert.ToDouble(x.PVPowerTotal)).ToArray()
-            };
-            Series.Add(PVTotal2);
-            break;
         case "PVPowerTotal":
             Series.Clear();   
             ChartSeries PVTotal = new ChartSeries(){
