@@ -19,7 +19,7 @@ namespace FoxessWebbus.Web.Services
         ErrorLogService errorLog = new ErrorLogService();
 
         List<ushort> RegisterNumbersList = new List<ushort>(){
-            31002,31005,31022,31022,31024,31023,31018,31014,31014
+            31002,31005,31022,31022,31024,31023,31018,31014,31014,31001,31000,31004,31003
         };
 
         public async Task Execute(IJobExecutionContext context)
@@ -76,6 +76,11 @@ namespace FoxessWebbus.Web.Services
 
                     foreach(var registerNumber in registerNumbers)
                     {
+
+                        if(registerNumber == 31001)
+                        {
+                            Console.WriteLine();
+                        }
                         timer.Start();
                         try
                         {

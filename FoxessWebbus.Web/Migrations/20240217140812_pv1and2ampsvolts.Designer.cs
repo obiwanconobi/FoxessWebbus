@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoxessWebbus.Web.Migrations
 {
     [DbContext(typeof(SqliteContext))]
-    partial class SqliteContextModelSnapshot : ModelSnapshot
+    [Migration("20240217140812_pv1and2ampsvolts")]
+    partial class pv1and2ampsvolts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -103,17 +106,17 @@ namespace FoxessWebbus.Web.Migrations
                     b.Property<DateTime>("LoggedDateTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("PV1Amps")
-                        .HasColumnType("TEXT");
+                    b.Property<short>("PV1Amps")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("PV1Voltage")
-                        .HasColumnType("TEXT");
+                    b.Property<short>("PV1Voltage")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("PV2Amps")
-                        .HasColumnType("TEXT");
+                    b.Property<short>("PV2Amps")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("PV2Voltage")
-                        .HasColumnType("TEXT");
+                    b.Property<short>("PV2Voltage")
+                        .HasColumnType("INTEGER");
 
                     b.Property<short>("PVPower1")
                         .HasColumnType("INTEGER");

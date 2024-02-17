@@ -21,7 +21,11 @@ public class UploadModelData{
            H1ModelDb dbModel = new H1ModelDb(){
                EntryId = Guid.NewGuid(),
                PVPower1 = model.PVPower1,
+               PV1Amps = model.PV1Amps,
+               PV1Voltage = model.PV1Voltage,
                PVPower2 = model.PVPower2,
+               PV2Amps = model.PV2Amps,
+               PV2Voltage = model.PV2Voltage,
                PVPowerTotal = model.PVPowerTotal,
                BatteryCharge = model.BatteryCharge,
                BatteryDischarge = model.BatteryDischarge,

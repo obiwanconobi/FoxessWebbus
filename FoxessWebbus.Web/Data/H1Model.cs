@@ -3,7 +3,11 @@ namespace FoxessWebbus.Web.Data;
 public class H1Model
 {
     public short PVPower1 {get;set;}
+    public decimal PV1Amps { get; set; }
+    public decimal PV1Voltage { get; set; }
     public short PVPower2 {get;set;}
+    public decimal PV2Amps { get; set; } 
+    public decimal PV2Voltage { get; set;}
     public short PVPowerTotal {get; set;} 
     public short BatteryCharge { get; set; }
     public short BatteryDischarge {get;set;}
@@ -46,9 +50,27 @@ public class H1Model
             case 8:
                 FromGrid = RelativeZero(val, true);
                 break;
+            case 9:
+                PV1Amps = FormatDivide10(val);
+                break;
+            case 10:
+                PV1Voltage = FormatDivide10(val);
+                break;
+            case 11:
+                PV2Amps = FormatDivide10(val);
+                break;
+            case 12:
+                PV2Voltage = FormatDivide10(val);
+                break;
 
         }
 
+    }
+
+
+    private decimal FormatDivide10(short val)
+    {
+        return Convert.ToDecimal(val) / 10;
     }
 
     private short FormatTemp(short val)
